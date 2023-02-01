@@ -154,7 +154,7 @@ public class JankHammer : MonoBehaviour
     private void MovePlayer()
     {
         playerRB.angularVelocity = Vector3.zero;
-        playerRB.AddRelativeTorque(new Vector3(balanceInput.y, 0, -balanceInput.x) * balanceMultiplier);
+        playerRB.AddRelativeTorque(new Vector3(balanceInput.y, 0, -balanceInput.x) * balanceMultiplier, ForceMode.Acceleration);
     }
 
     public void ReadBalance(InputAction.CallbackContext balance)
