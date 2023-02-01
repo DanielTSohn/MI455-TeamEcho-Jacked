@@ -32,6 +32,7 @@ public class JankHammer : MonoBehaviour
     [SerializeField]
     [Tooltip("Time for one full piston cycle")]
     private float pistonCycleTime = 0.04f;
+    public float pistonVelocity = 200;
     #endregion
 
     #region Control Parameters
@@ -139,8 +140,8 @@ public class JankHammer : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(()=>PistonActive); }
-            MovePiston(targetPosition);
-
+            //MovePiston(targetPosition);
+            pistonRB.AddRelativeForce(targetPosition * pistonVelocity, ForceMode.VelocityChange);
             targetPosition *= -1;
             yield return new WaitForSeconds(pistonCycleTime / 2);
         }
