@@ -216,7 +216,7 @@ public class JackhammerStandard : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
-            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(playerCollider.transform.up * -0.5f), 0.5f, terrain, groundLayers);
+            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.52f, terrain, groundLayers);
             if (terrain[0] != null)
             {
                 playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
@@ -263,6 +263,6 @@ public class JackhammerStandard : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(player.transform.TransformPoint(playerCollider.transform.up * -0.5f), 0.5f);
+        Gizmos.DrawSphere(player.transform.TransformPoint(Vector3.down / 2), 0.52f);
     }
 }
