@@ -18,7 +18,7 @@ public class GridSystem : MonoBehaviour
     [Tooltip("Cell class to spawn")]
     [SerializeField] private GameObject cell;
 
-    private List<GameObject> cells;
+    private List<GameObject> cells = new(0);
 
     [ExecuteInEditMode]
     public void InitializeTiles()
@@ -45,9 +45,9 @@ public class GridSystem : MonoBehaviour
     [ExecuteInEditMode]
     public void RemoveTiles()
     {
-        foreach(GameObject tile in cells)
+        while (transform.childCount > 0)
         {
-            DestroyImmediate(tile);
+            DestroyImmediate(transform.GetChild(0).gameObject);
         }
         cells.Clear();
     }

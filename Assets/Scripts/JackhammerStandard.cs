@@ -216,10 +216,10 @@ public class JackhammerStandard : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
-            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.52f, terrain, groundLayers);
+            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.55f, terrain, groundLayers);
             if (terrain[0] != null)
             {
-                playerRB.velocity = Vector3.zero;
+                playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight)*7f);
                 playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
                 terrain[0] = null;
             }

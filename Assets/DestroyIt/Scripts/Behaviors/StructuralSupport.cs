@@ -47,7 +47,10 @@ namespace DestroyIt
             {
                 Rigidbody[] rbodies = gameObject.GetComponentsInChildren<Rigidbody>();
                 foreach (Rigidbody rbody in rbodies)
+                {
                     rbody.WakeUp();
+                    //rbody.useGravity = true;
+                }
             }
         }
 
