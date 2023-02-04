@@ -13,6 +13,8 @@ public class JackhammerStandard : MonoBehaviour
     [SerializeField]
     [Tooltip("The player's rigidbody for controlling movement")]
     private Rigidbody playerRB;
+    [SerializeField]
+    private CapsuleCollider playerCollider;
     #endregion
 
     #region Piston Parameters
@@ -95,6 +97,7 @@ public class JackhammerStandard : MonoBehaviour
     // arrange with component setter singleton later
     private bool sceneActive = true;
     private bool jumpHoldIterrupt;
+    private Collider[] terrain = new Collider[1];
     #endregion
 
     void Awake()
@@ -115,6 +118,16 @@ public class JackhammerStandard : MonoBehaviour
                     {
                         Debug.LogError("No rigidbody attached found on the player object!");
                     }
+                }
+            }
+        }
+        if (playerCollider == null)
+        {
+            if (player != null)
+            {
+                if (!player.TryGetComponent(out playerCollider))
+                {
+                    Debug.LogError("No capsule collider attached found on the player object!");
                 }
             }
         }
@@ -203,13 +216,12 @@ public class JackhammerStandard : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
-
-            Collider[] grounds = Physics.OverlapBox(transform.position, new Vector3(1, 2, 1), transform.rotation, groundLayers);
-            if (grounds.Length > 0)
+            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.52f, terrain, groundLayers);
+            if (terrain[0] != null)
             {
                 playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
+                terrain[0] = null;
             }
-
             yield return new WaitForSeconds(pistonCycleTime);
         }
     }
@@ -246,5 +258,11 @@ public class JackhammerStandard : MonoBehaviour
         PistonActive = true;
         yield return new WaitForSeconds(jumpCooldown);
         Jumping = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(player.transform.TransformPoint(Vector3.down / 2), 0.52f);
     }
 }
