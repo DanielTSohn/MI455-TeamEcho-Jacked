@@ -239,12 +239,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 106038021}
   playerRB: {fileID: 106038027}
+  playerCollider: {fileID: 106038022}
   groundLayers:
     serializedVersion: 2
     m_Bits: 128
-  jumpHeight: 0.15
+  jumpHeight: 0.05
   bigJumpHeight: 10
-  pistonCycleTime: 0.15
+  pistonCycleTime: 0.02
   maxJumpHoldTime: 1.5
   jumpCooldown: 10
   balanceMultiplier: 2
@@ -502,7 +503,6 @@ GameObject:
   - component: {fileID: 629996543}
   - component: {fileID: 629996546}
   - component: {fileID: 629996545}
-  - component: {fileID: 629996544}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
@@ -525,19 +525,6 @@ Transform:
   m_Father: {fileID: 106038025}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &629996544
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 629996542}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &629996545
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -742,7 +729,6 @@ GameObject:
   - component: {fileID: 1350870870}
   - component: {fileID: 1350870873}
   - component: {fileID: 1350870872}
-  - component: {fileID: 1350870871}
   m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
@@ -765,19 +751,6 @@ Transform:
   m_Father: {fileID: 106038025}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1350870871
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1350870869}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1350870872
 MeshRenderer:
   m_ObjectHideFlags: 0
