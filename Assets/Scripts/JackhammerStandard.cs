@@ -243,7 +243,6 @@ public class JackhammerStandard : MonoBehaviour
 
         Debug.Log(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)));
         playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * Vector3.up, ForceMode.VelocityChange);
-        yield return new WaitForSeconds(0.5f);
         PistonActive = true;
         yield return new WaitForSeconds(jumpCooldown);
         Jumping = false;
