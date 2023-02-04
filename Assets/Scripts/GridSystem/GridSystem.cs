@@ -18,34 +18,37 @@ public class GridSystem : MonoBehaviour
     [Tooltip("Cell class to spawn")]
     [SerializeField] private GameObject cell;
 
-    private void Awake()
-    {
-        
-    }
+    private List<GameObject> cells;
 
-    // Start is called before the first frame update
-    void Start()
+    [ExecuteInEditMode]
+    public void InitializeTiles()
     {
-        grid = GetComponent<Grid>();
-        if (cell) { InitializeTiles(); }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void InitializeTiles()
-    {
-        for (int i = 0; i < gridWidth; i++)
+#if UNITY_EDITOR
+        if (TryGetComponent(out grid))
         {
-            for (int j = 0; j < gridHeight; j++)
+            if(cells.Count > 0)
             {
-                Vector3 WorldLocation = grid.CellToWorld(new Vector3Int(i, j, 0));
-                Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
+                RemoveTiles();
+            }
+            for (int i = 0; i < gridWidth; i++)
+            {
+                for (int j = 0; j < gridHeight; j++)
+                {
+                    Vector3 WorldLocation = grid.CellToWorld(new Vector3Int(i, j, 0));
+                    cells.Add(Instantiate(cell, WorldLocation, grid.transform.rotation, transform));
+                }
             }
         }
+#endif
     }
 
+    [ExecuteInEditMode]
+    public void RemoveTiles()
+    {
+        foreach(GameObject tile in cells)
+        {
+            DestroyImmediate(tile);
+        }
+        cells.Clear();
+    }
 }
