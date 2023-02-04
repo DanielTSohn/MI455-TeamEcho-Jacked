@@ -13,26 +13,37 @@ public class JackhammerStandard : MonoBehaviour
     [SerializeField]
     [Tooltip("The player's rigidbody for controlling movement")]
     private Rigidbody playerRB;
-    [SerializeField]
-    [Tooltip("The piston game object, will be moved up and down")]
-    private GameObject piston;
-    [SerializeField]
-    [Tooltip("The rigidbody of the piston, used to move the game object through physics")]
-    private Rigidbody pistonRB;
     #endregion
 
     #region Piston Parameters
-    public float PistonMoveDistance { get { return pistonMoveDistance; } private set { pistonMoveDistance = value; } }
+    [SerializeField]
+    private LayerMask groundLayers;
+
+    public float JumpHeight { get { return jumpHeight; } private set { jumpHeight = value; } }
     [Header("Piston Parameters")]
     [SerializeField]
-    [Tooltip("The distance in meters the piston moves in the jackhammer")]
-    private float pistonMoveDistance = 0.1f;
+    [Tooltip("The distance in meters the player jumps")]
+    private float jumpHeight = 0.1f;
+
+    public float BigJumpHeight { get { return bigJumpHeight; } private set { bigJumpHeight = value; } }
+    [SerializeField]
+    [Tooltip("The distance in meters the player jumps from input")]
+    private float bigJumpHeight = 0.5f;
 
     public float PistonCycleTime { get { return pistonCycleTime; } set { pistonCycleTime = value; } }
     [SerializeField]
     [Tooltip("Time for one full piston cycle")]
     private float pistonCycleTime = 0.04f;
-    public float pistonVelocity = 200;
+
+    public float MaxJumpHoldTime { get { return maxJumpHoldTime; } set { maxJumpHoldTime = value; } }
+    [SerializeField]
+    [Tooltip("Maximmum time, in seconds, the jump charge can be held")]
+    private float maxJumpHoldTime = 1f;
+
+    public float JumpCooldown { get { return jumpCooldown; } set { jumpCooldown = value; } }
+    [SerializeField]
+    [Tooltip("How long, in seconds, between jumps")]
+    private float jumpCooldown = 1f;
     #endregion
 
     #region Control Parameters
@@ -41,6 +52,12 @@ public class JackhammerStandard : MonoBehaviour
     [Header("Control Parameters")]
     [Tooltip("The multiplier to the input 'balance'")]
     private float balanceMultiplier = 1;
+
+    public float RotateMultiplier { get { return rotateMultiplier; } set { rotateMultiplier = value; } }
+    [SerializeField]
+    [Header("Control Parameters")]
+    [Tooltip("The multiplier to the input 'balance'")]
+    private float rotateMultiplier = 1;
     #endregion
 
     #region Status Variables
@@ -59,36 +76,30 @@ public class JackhammerStandard : MonoBehaviour
     /// False: Player has no move input
     /// </summary>
     public bool Moving { get; private set; } = false;
+    /// <summary>
+    /// True: Player is inputing a rotate input
+    /// False: Player has no rotate input
+    /// </summary>
+    public bool Rotating { get; private set; } = false;
+
+    /// <summary>
+    /// True: Player is inputing a jump input
+    /// False: Player has no jump input
+    /// </summary>
+    public bool Jumping { get; private set; } = false;
     #endregion
 
     #region Private Variables
     private Vector2 balanceInput;
+    private float rotateInput;
     // arrange with component setter singleton later
     private bool sceneActive = true;
+    private bool jumpHoldIterrupt;
     #endregion
 
     void Awake()
     {
         #region Component handling
-        if (piston == null)
-        {
-            piston = GameObject.Find("Piston");
-            if (piston == null)
-            {
-                Debug.LogError("No piston object attatched or found!");
-            }
-            else
-            {
-                if (pistonRB == null)
-                {
-                    if (!piston.TryGetComponent(out pistonRB))
-                    {
-                        Debug.LogError("No rigidbody attached found on the piston object!");
-                    }
-                }
-            }
-        }
-
         if (player == null)
         {
             player = GameObject.Find("Player");
@@ -117,40 +128,23 @@ public class JackhammerStandard : MonoBehaviour
         {
             yield return new WaitUntil(() => sceneActive);
         }
-        StartCoroutine(CyclePiston());
         StartCoroutine(PlayerMovement());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void FixedUpdate()
-    {
-        
+        StartCoroutine(PlayerRotate());
+        StartCoroutine(CyclePiston());
     }
 
     public bool ToggleMove(){ return CanMove = !CanMove; }
 
-    private IEnumerator CyclePiston()
-    {
-        while(sceneActive)
-        {
-            if (!PistonActive) { yield return new WaitUntil(()=>PistonActive); }
-
-            yield return new WaitForSeconds(pistonCycleTime);
-        }
-    }
-
-    private void MovePiston(Vector3 targetPosition)
-    {
-    }
-
     private void MovePlayer()
     {
+        playerRB.angularVelocity = Vector3.zero;
+        playerRB.AddRelativeTorque(new Vector3(balanceInput.y, 0, -balanceInput.x) * BalanceMultiplier, ForceMode.VelocityChange);
+    }
 
+    private void RotatePlayer()
+    {
+        playerRB.angularVelocity = new Vector3(playerRB.angularVelocity.x, 0, playerRB.angularVelocity.z);
+        playerRB.AddRelativeTorque(new Vector3(0, rotateInput, 0) * rotateMultiplier, ForceMode.VelocityChange);
     }
 
     public void ReadBalance(InputAction.CallbackContext balance)
@@ -166,6 +160,19 @@ public class JackhammerStandard : MonoBehaviour
         }
     }
 
+    public void ReadRotate(InputAction.CallbackContext rotate)
+    {
+        if(rotate.performed)
+        {
+            rotateInput = rotate.ReadValue<float>();
+            Rotating = true;
+        }
+        else
+        {
+            Rotating = false;
+        }
+    }
+
     private IEnumerator PlayerMovement()
     {
         while(sceneActive)
@@ -177,5 +184,68 @@ public class JackhammerStandard : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
         }
+    }
+    private IEnumerator PlayerRotate()
+    {
+        while (sceneActive)
+        {
+            if (!CanMove) { yield return new WaitUntil(() => CanMove); }
+            if (!Rotating) { yield return new WaitUntil(() => Rotating); }
+
+            RotatePlayer();
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    private IEnumerator CyclePiston()
+    {
+        while(sceneActive)
+        {
+            if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
+
+            Collider[] grounds = Physics.OverlapBox(transform.position, new Vector3(1, 2, 1), transform.rotation, groundLayers);
+            if (grounds.Length > 0)
+            {
+                playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
+            }
+
+            yield return new WaitForSeconds(pistonCycleTime);
+        }
+    }
+
+    public void ReadJump(InputAction.CallbackContext jump)
+    {
+        if(jump.performed && !Jumping)
+        {
+            PistonActive = false;
+            jumpHoldIterrupt = false;
+            StartCoroutine(JumpCounter());
+            playerRB.rotation.SetLookRotation(new Vector3(0, playerRB.rotation.y, 0));
+            playerRB.velocity = Vector3.zero;
+        }
+        else
+        {
+            jumpHoldIterrupt = true;
+        }
+    }
+
+    private IEnumerator JumpCounter()
+    {
+        Jumping = true;
+        float jumpHoldTime;
+        for (jumpHoldTime = 0; jumpHoldTime < maxJumpHoldTime; jumpHoldTime += Time.fixedDeltaTime)
+        {
+            if(TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
+            if (jumpHoldIterrupt) { break; }
+            yield return new WaitForFixedUpdate();
+        }
+
+        Debug.Log(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)));
+        playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * Vector3.up, ForceMode.VelocityChange);
+        yield return new WaitForSeconds(0.5f);
+        PistonActive = true;
+        yield return new WaitForSeconds(jumpCooldown);
+        Jumping = false;
     }
 }
