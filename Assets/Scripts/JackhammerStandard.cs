@@ -100,6 +100,10 @@ public class JackhammerStandard : MonoBehaviour
     private Collider[] terrain = new Collider[1];
     #endregion
 
+    #region Misc Variables
+    [SerializeField] public Color playerColorIdentifier { get; private set; } = Color.red;
+    #endregion
+
     void Awake()
     {
         #region Component handling
