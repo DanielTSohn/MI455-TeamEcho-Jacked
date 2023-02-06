@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DestroyIt;
 
 public class JackhammerStandard : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class JackhammerStandard : MonoBehaviour
     private Rigidbody playerRB;
     [SerializeField]
     private CapsuleCollider playerCollider;
+    [SerializeField]
+    private GameEvent jumpUpdate;
+    [SerializeField]
+    private GameEvent jumpCDUpdate;
+    [SerializeField]
+    private GameEvent onJump;
     #endregion
 
     #region Piston Parameters
@@ -97,7 +104,11 @@ public class JackhammerStandard : MonoBehaviour
     // arrange with component setter singleton later
     private bool sceneActive = true;
     private bool jumpHoldIterrupt;
-    private Collider[] terrain = new Collider[1];
+    private Collider[] terrains = new Collider[500];
+    [HideInInspector]
+    public float jumpProportion = 0;
+    [HideInInspector]
+    public float jumpCDProportion = 0;
     #endregion
 
     #region Misc Variables
@@ -220,12 +231,23 @@ public class JackhammerStandard : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
-            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.55f, terrain, groundLayers);
-            if (terrain[0] != null)
+            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.55f, terrains, groundLayers);
+            if (terrains[0] != null)
             {
                 playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight)*6.5f);
                 playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
-                terrain[0] = null;
+                terrains[0] = null;
+                foreach(Collider tile in terrains)
+                {
+                    if(tile != null)
+                    {
+                        Destructible tileDestroy;
+                        if(tile.TryGetComponent(out tileDestroy))
+                        {
+                            tileDestroy.ApplyDamage(1);
+                        }
+                    }
+                }
             }
             yield return new WaitForSeconds(pistonCycleTime);
         }
@@ -253,20 +275,27 @@ public class JackhammerStandard : MonoBehaviour
         float jumpHoldTime;
         for (jumpHoldTime = 0; jumpHoldTime < maxJumpHoldTime; jumpHoldTime += Time.fixedDeltaTime)
         {
+            jumpProportion = jumpHoldTime / maxJumpHoldTime;
+            jumpUpdate.TriggerEvent(gameObject);
             if(TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
             if (jumpHoldIterrupt) { break; }
             yield return new WaitForFixedUpdate();
         }
 
+        jumpUpdate.TriggerEvent(gameObject);
+        onJump.TriggerEvent();
         playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * Vector3.up, ForceMode.VelocityChange);
         PistonActive = true;
-        yield return new WaitForSeconds(jumpCooldown);
+        float cooldown;
+        jumpCDProportion = 1;
+        for (cooldown = jumpCooldown; cooldown >= 0; cooldown -= Time.fixedDeltaTime)
+        {
+            if(cooldown < jumpCooldown / 2) { jumpProportion = 0; }
+            jumpCDProportion = cooldown / jumpCooldown;
+            if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
+            yield return new WaitForFixedUpdate();
+        }
+        jumpCDProportion = 0;
         Jumping = false;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(player.transform.TransformPoint(Vector3.down / 2), 0.52f);
     }
 }
