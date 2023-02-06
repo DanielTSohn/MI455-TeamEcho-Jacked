@@ -975,7 +975,6 @@ GameObject:
   - component: {fileID: 8041491646174678210}
   - component: {fileID: 362789882488230129}
   - component: {fileID: 197549397846673010}
-  - component: {fileID: -5009535329487979548}
   m_Layer: 0
   m_Name: Broken Hex Holder
   m_TagString: Untagged
@@ -1092,10 +1091,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bb98e7a1de8586343b1a9a31c92e95b0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 46372869e53d122469d46c4305c050d5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.001
-  m_Pitch: 1
+  m_Volume: 0.006
+  m_Pitch: 1.25
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -1178,26 +1177,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!164 &-5009535329487979548
-AudioReverbFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8041491646174678208}
-  m_Enabled: 1
-  m_DryLevel: 0
-  m_Room: -1000
-  m_RoomHF: 0
-  m_DecayTime: 8.39
-  m_DecayHFRatio: 1.39
-  m_ReflectionsLevel: -115
-  m_ReverbLevel: 985
-  m_ReverbDelay: 0.03
-  m_Diffusion: 100
-  m_Density: 100
-  m_HFReference: 5000
-  m_RoomLF: 0
-  m_LFReference: 250
-  m_ReflectionsDelay: 0
-  m_ReverbPreset: 24
