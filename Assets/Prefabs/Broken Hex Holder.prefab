@@ -1017,6 +1017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b036f521412a84bac19efc0de330aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileFall: {fileID: 11400000, guid: ad5dddbad128fb944b0070e222c19c2f, type: 2}
   debrisParent: {fileID: 8041491646174678209}
   explosionForce: 5
   delayTime: 5

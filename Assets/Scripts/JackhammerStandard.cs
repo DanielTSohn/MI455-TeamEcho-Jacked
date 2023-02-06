@@ -219,7 +219,7 @@ public class JackhammerStandard : MonoBehaviour
             Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.55f, terrain, groundLayers);
             if (terrain[0] != null)
             {
-                playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight)*7f);
+                playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight)*6.5f);
                 playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
                 terrain[0] = null;
             }
@@ -254,7 +254,6 @@ public class JackhammerStandard : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        Debug.Log(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)));
         playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * Vector3.up, ForceMode.VelocityChange);
         PistonActive = true;
         yield return new WaitForSeconds(jumpCooldown);
