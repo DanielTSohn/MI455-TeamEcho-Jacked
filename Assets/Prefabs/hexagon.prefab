@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65694610fda7b6b4191f7df156bd44be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  neighbors: []
+  destroyed: 0
 --- !u!64 &5695002486572175077
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -144,7 +146,7 @@ MonoBehaviour:
   minDamage: 10
   maxDamage: 100
   minDamageTime: 0
-  ignoreCollisionsUnder: 0
+  ignoreCollisionsUnder: Infinity
   unparentOnDestroy: []
   disableKinematicOnUparentedChildren: 1
   replaceMaterials: []

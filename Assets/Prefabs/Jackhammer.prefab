@@ -409,6 +409,7 @@ MonoBehaviour:
   jumpUpdate: {fileID: 11400000, guid: 1ff58015e8ddd764d890319f1a800cf7, type: 2}
   jumpCDUpdate: {fileID: 11400000, guid: 1e482e6512130f140a77f9b9edcf1f93, type: 2}
   onJump: {fileID: 11400000, guid: 1e482e6512130f140a77f9b9edcf1f93, type: 2}
+  sphereCastVerticalOffset: -0.7
   groundLayers:
     serializedVersion: 2
     m_Bits: 384

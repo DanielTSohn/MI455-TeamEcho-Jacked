@@ -6,7 +6,7 @@ using DestroyIt;
 
 public class JackhammerStandard : MonoBehaviour
 {
- #region Components
+    #region Components
     [Header("Required Components")]
     [SerializeField]
     [Tooltip("The player on top of the jackhammer")]
@@ -26,8 +26,11 @@ public class JackhammerStandard : MonoBehaviour
 
     #region Piston Parameters
     [SerializeField]
-    private LayerMask groundLayers;
+    [Tooltip("Offset of the spherecast downwards")]
+    private float sphereCastVerticalOffset = 1.5f;
 
+    [SerializeField]
+    private LayerMask groundLayers;
     public float JumpHeight { get { return jumpHeight; } private set { jumpHeight = value; } }
     [Header("Piston Parameters")]
     [SerializeField]
@@ -104,11 +107,12 @@ public class JackhammerStandard : MonoBehaviour
     // arrange with component setter singleton later
     private bool sceneActive = true;
     private bool jumpHoldIterrupt;
-    private Collider[] terrains = new Collider[500];
+    private Collider[] terrains = new Collider[10];
     [HideInInspector]
     public float jumpProportion = 0;
     [HideInInspector]
     public float jumpCDProportion = 0;
+    private float initialRadius;
     #endregion
 
     #region Misc Variables
@@ -146,6 +150,7 @@ public class JackhammerStandard : MonoBehaviour
                 }
             }
         }
+        if(playerCollider != null) { initialRadius = playerCollider.radius; }
         #endregion
         StartCoroutine(DelayedStart());
     }
@@ -231,23 +236,24 @@ public class JackhammerStandard : MonoBehaviour
         while(sceneActive)
         {
             if (!PistonActive) { yield return new WaitUntil(() => PistonActive); }
-            Physics.OverlapSphereNonAlloc(player.transform.TransformPoint(Vector3.down / 2), 0.55f, terrains, groundLayers);
-            if (terrains[0] != null)
+            terrains = Physics.OverlapSphere(player.transform.TransformPoint(new Vector3(0, sphereCastVerticalOffset, 0)), initialRadius + 0.05f, groundLayers);
+            bool validTerrain = false;
+            foreach(Collider tile in terrains)
             {
-                playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight)*6.5f);
-                playerRB.AddRelativeForce(Mathf.Sqrt(-2*Physics.gravity.y*jumpHeight) * Vector3.up, ForceMode.VelocityChange);
-                terrains[0] = null;
-                foreach(Collider tile in terrains)
+                if(tile != null)
                 {
-                    if(tile != null)
+                    validTerrain = true;
+                    Destructible tileDestroy;
+                    if(tile.TryGetComponent(out tileDestroy))
                     {
-                        Destructible tileDestroy;
-                        if(tile.TryGetComponent(out tileDestroy))
-                        {
-                            tileDestroy.ApplyDamage(1);
-                        }
+                        tileDestroy.ApplyDamage(1);
                     }
                 }
+            }
+            if(validTerrain)
+            {
+                playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight) * 6.5f);
+                playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * jumpHeight) * Vector3.up, ForceMode.VelocityChange);
             }
             yield return new WaitForSeconds(pistonCycleTime);
         }
@@ -297,5 +303,11 @@ public class JackhammerStandard : MonoBehaviour
         }
         jumpCDProportion = 0;
         Jumping = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(player.transform.TransformPoint(new Vector3(0, sphereCastVerticalOffset, 0)), initialRadius + 0.05f);
     }
 }
