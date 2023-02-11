@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 882089979793837005}
   - component: {fileID: 2525982686439707181}
   - component: {fileID: 6690274664135265385}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_003 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 2383777129967766507}
   - component: {fileID: 8235691656884943972}
   - component: {fileID: 7985401658571121885}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_008 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 5546104072651131076}
   - component: {fileID: 683824203489197103}
   - component: {fileID: 39714101219495678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_004 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 6271546974206364734}
   - component: {fileID: 6841365687780833345}
   - component: {fileID: 1241594756709492543}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_002 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 696913873907971026}
   - component: {fileID: 6634369217965922683}
   - component: {fileID: 1667429249249757892}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_007 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -512,7 +512,7 @@ GameObject:
   - component: {fileID: 6308218999187305601}
   - component: {fileID: 8386452436950850992}
   - component: {fileID: 6049056641640775668}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_006 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 3915146212613197923}
   - component: {fileID: 5137132051136034040}
   - component: {fileID: 2112540925934620294}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_009 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -712,7 +712,7 @@ GameObject:
   - component: {fileID: 1113023795507404813}
   - component: {fileID: 4512574303122866401}
   - component: {fileID: 1537727931614299911}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_005 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -812,7 +812,7 @@ GameObject:
   - component: {fileID: 8993265196861541297}
   - component: {fileID: 3939295002905796705}
   - component: {fileID: 2203046676993410663}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder_001_cell_001 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 8041491646174678210}
   - component: {fileID: 362789882488230129}
   - component: {fileID: 197549397846673010}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Broken Hex Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1022,7 +1022,7 @@ MonoBehaviour:
   tileFall: {fileID: 11400000, guid: ad5dddbad128fb944b0070e222c19c2f, type: 2}
   debrisParent: {fileID: 8041491646174678209}
   explosionForce: 5
-  destroyTime: 25
+  destroyTime: 15
   delayTime: 5
 --- !u!114 &362789882488230129
 MonoBehaviour:

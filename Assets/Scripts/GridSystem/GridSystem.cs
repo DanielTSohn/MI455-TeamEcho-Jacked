@@ -18,7 +18,6 @@ public class GridSystem : MonoBehaviour
     [Tooltip("Cell class to spawn")]
     [SerializeField] private GameObject cell;
 
-    private List<GameObject> cells = new(0);
     [HideInInspector] public Dictionary<Vector3Int, GameObject> cellsHash = new Dictionary<Vector3Int, GameObject>();
 
     [ExecuteInEditMode]
@@ -27,7 +26,7 @@ public class GridSystem : MonoBehaviour
 #if UNITY_EDITOR
         if (TryGetComponent(out grid))
         {
-            if(cells.Count > 0)
+            if(cellsHash.Count > 0)
             {
                 RemoveTiles();
             }
@@ -38,7 +37,6 @@ public class GridSystem : MonoBehaviour
                     Vector3Int vIntLocation = new Vector3Int(i, j, 0);
                     Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
                     var newCell = Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
-                    cells.Add(newCell);
                     cellsHash.Add(vIntLocation, newCell);
                     AssignAsNeighbor(newCell, i, j);
                 }
@@ -54,7 +52,7 @@ public class GridSystem : MonoBehaviour
         {
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
-        cells.Clear();
+        cellsHash.Clear();
     }
 
     // Takes a gameobject "Cell", and checks if it has neighbors. If so,
