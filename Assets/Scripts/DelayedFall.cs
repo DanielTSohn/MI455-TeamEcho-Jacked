@@ -10,7 +10,8 @@ public class DelayedFall : MonoBehaviour
     private Transform debrisParent;
     [SerializeField]
     private float explosionForce;
-
+    [SerializeField]
+    private float destroyTime;
 
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
     [SerializeField]
@@ -26,7 +27,6 @@ public class DelayedFall : MonoBehaviour
         for (float time = 0; time < delayTime; time += Time.fixedDeltaTime)
         {
             if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
-            time += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
         tileFall.TriggerEvent();
@@ -40,5 +40,13 @@ public class DelayedFall : MonoBehaviour
                 debrisRB.AddExplosionForce(explosionForce, debrisParent.position, 5, 0, ForceMode.VelocityChange); 
             }
         }
+
+        for (float time = 0; time < destroyTime; time += Time.fixedDeltaTime)
+        {
+            if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
+            yield return new WaitForFixedUpdate();
+        }
+
+        Destroy(gameObject);
     }
 }

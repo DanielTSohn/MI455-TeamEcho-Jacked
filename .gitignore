@@ -70,3 +70,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/RealToon/RealToon Examples/SRP/URP/RealToon URP (Simple Example).unitypackage.meta
+Assets/RealToon/RealToon Shader Packages/SRP (LWRP - URP - HDRP)/URP/RealToon URP (URP 10).unitypackage.meta
+Assets/RealToon/RealToon Shader Packages/SRP (LWRP - URP - HDRP)/URP/RealToon URP (URP 11).unitypackage.meta
+Assets/RealToon/RealToon Shader Packages/SRP (LWRP - URP - HDRP)/URP/RealToon URP (URP 12 and 13).unitypackage.meta
+Assets/RealToon/RealToon Shader Packages/SRP (LWRP - URP - HDRP)/URP/RealToon URP (URP 14 and Later).unitypackage.meta
+Assets/RealToon/RealToon Shader Packages/SRP (LWRP - URP - HDRP)/URP/RealToon URP (URP 7 and 8).unitypackage.meta
