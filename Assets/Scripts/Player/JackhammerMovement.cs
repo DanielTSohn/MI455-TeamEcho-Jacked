@@ -7,14 +7,6 @@ using DestroyIt;
 public class JackhammerMovement : MonoBehaviour
 {
     #region Components
-    [Header("Game Events")]
-    [SerializeField]
-    private GameEvent jumpUpdate;
-    [SerializeField]
-    private GameEvent jumpCDUpdate;
-    [SerializeField]
-    private GameEvent onJump;
-
     [Header("Required Components")]
     [SerializeField]
     [Tooltip("The player on top of the jackhammer")]
@@ -23,11 +15,13 @@ public class JackhammerMovement : MonoBehaviour
     [Tooltip("The player's rigidbody for controlling movement")]
     private Rigidbody playerRB;
     [SerializeField]
-    [Tooltip("The collider of the jackhammer, used to scale spherecast (jumping and destruction checks)")]
     private CapsuleCollider playerCollider;
     [SerializeField]
-    [Tooltip("Basis to move controls too")]
-    private Transform relativeAnchor;
+    private GameEvent jumpUpdate;
+    [SerializeField]
+    private GameEvent jumpCDUpdate;
+    [SerializeField]
+    private GameEvent onJump;
     #endregion
 
     #region Piston Parameters
@@ -70,6 +64,12 @@ public class JackhammerMovement : MonoBehaviour
     [Header("Control Parameters")]
     [Tooltip("The multiplier to the input 'balance'")]
     private float balanceMultiplier = 1;
+
+    public float RotateMultiplier { get { return rotateMultiplier; } set { rotateMultiplier = value; } }
+    [SerializeField]
+    [Header("Control Parameters")]
+    [Tooltip("The multiplier to the input 'balance'")]
+    private float rotateMultiplier = 1;
     #endregion
 
     #region Status Variables
@@ -77,7 +77,7 @@ public class JackhammerMovement : MonoBehaviour
     /// True: Piston is active and moving
     /// False: Piston is not active and not moving
     /// </summary>
-    public bool PistonActive { get; private set; } = false;
+    public bool PistonActive { get; private set; } = true;
     /// <summary>
     /// True: Player can move via input
     /// False: Player can not move 
@@ -89,6 +89,12 @@ public class JackhammerMovement : MonoBehaviour
     /// </summary>
     public bool Moving { get; private set; } = false;
     /// <summary>
+    /// True: Player is inputing a rotate input
+    /// False: Player has no rotate input
+    /// </summary>
+    public bool Rotating { get; private set; } = false;
+
+    /// <summary>
     /// True: Player is inputing a jump input
     /// False: Player has no jump input
     /// </summary>
@@ -97,10 +103,15 @@ public class JackhammerMovement : MonoBehaviour
 
     #region Private Variables
     private Vector2 balanceInput;
+    private float rotateInput;
     // arrange with component setter singleton later
     private bool sceneActive = true;
     private bool jumpHoldIterrupt;
     private Collider[] terrains = new Collider[10];
+    [HideInInspector]
+    public float jumpProportion = 0;
+    [HideInInspector]
+    public float jumpCDProportion = 0;
     private float initialRadius;
     #endregion
 
@@ -139,10 +150,7 @@ public class JackhammerMovement : MonoBehaviour
                 }
             }
         }
-
         if (playerCollider != null) { initialRadius = playerCollider.radius; }
-        
-        if(relativeAnchor == null) { relativeAnchor = Camera.main.transform; }
         #endregion
         StartCoroutine(DelayedStart());
     }
@@ -153,8 +161,8 @@ public class JackhammerMovement : MonoBehaviour
         {
             yield return new WaitUntil(() => sceneActive);
         }
-        PistonActive = true;
         StartCoroutine(MoveCycle());
+        StartCoroutine(PlayerRotate());
         StartCoroutine(CyclePiston());
     }
 
@@ -163,14 +171,13 @@ public class JackhammerMovement : MonoBehaviour
     private void MovePlayer()
     {
         playerRB.angularVelocity = Vector3.zero;
-        Vector3 relativeForward = relativeAnchor.forward;
-        relativeForward.y = 0;
-        relativeForward.Normalize();
-        Vector3 relativeRight = relativeAnchor.right;
-        relativeRight.y = 0;
-        relativeRight.Normalize();
+        playerRB.AddRelativeTorque(new Vector3(balanceInput.y, 0, -balanceInput.x) * BalanceMultiplier, ForceMode.VelocityChange);
+    }
 
-        playerRB.AddTorque((-balanceInput.x * relativeForward + balanceInput.y * relativeRight) * BalanceMultiplier, ForceMode.VelocityChange);
+    private void RotatePlayer()
+    {
+        playerRB.angularVelocity = new Vector3(playerRB.angularVelocity.x, 0, playerRB.angularVelocity.z);
+        playerRB.AddRelativeTorque(new Vector3(0, rotateInput, 0) * rotateMultiplier, ForceMode.VelocityChange);
     }
 
     public void ReadBalance(InputAction.CallbackContext balance)
@@ -186,6 +193,19 @@ public class JackhammerMovement : MonoBehaviour
         }
     }
 
+    public void ReadRotate(InputAction.CallbackContext rotate)
+    {
+        if (rotate.performed)
+        {
+            rotateInput = rotate.ReadValue<float>();
+            Rotating = true;
+        }
+        else
+        {
+            Rotating = false;
+        }
+    }
+
     private IEnumerator MoveCycle()
     {
         while (sceneActive)
@@ -194,6 +214,18 @@ public class JackhammerMovement : MonoBehaviour
             if (!Moving) { yield return new WaitUntil(() => Moving); }
 
             MovePlayer();
+
+            yield return new WaitForFixedUpdate();
+        }
+    }
+    private IEnumerator PlayerRotate()
+    {
+        while (sceneActive)
+        {
+            if (!CanMove) { yield return new WaitUntil(() => CanMove); }
+            if (!Rotating) { yield return new WaitUntil(() => Rotating); }
+
+            RotatePlayer();
 
             yield return new WaitForFixedUpdate();
         }
@@ -248,6 +280,7 @@ public class JackhammerMovement : MonoBehaviour
         float jumpHoldTime;
         for (jumpHoldTime = 0; jumpHoldTime < maxJumpHoldTime; jumpHoldTime += Time.fixedDeltaTime)
         {
+            jumpProportion = jumpHoldTime / maxJumpHoldTime;
             jumpUpdate.TriggerEvent(gameObject);
             if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
             if (jumpHoldIterrupt) { break; }
@@ -259,11 +292,15 @@ public class JackhammerMovement : MonoBehaviour
         playerRB.AddRelativeForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * Vector3.up, ForceMode.VelocityChange);
         PistonActive = true;
         float cooldown;
+        jumpCDProportion = 1;
         for (cooldown = jumpCooldown; cooldown >= 0; cooldown -= Time.fixedDeltaTime)
         {
+            if (cooldown < jumpCooldown / 2) { jumpProportion = 0; }
+            jumpCDProportion = cooldown / jumpCooldown;
             if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
             yield return new WaitForFixedUpdate();
         }
+        jumpCDProportion = 0;
         Jumping = false;
     }
 

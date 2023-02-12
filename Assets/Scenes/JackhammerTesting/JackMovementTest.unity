@@ -1014,8 +1014,8 @@ MonoBehaviour:
   pistonCycleTime: 0.04
   maxJumpHoldTime: 1
   jumpCooldown: 1
-  balanceMultiplier: 3
-  rotateMultiplier: 1
+  balanceMultiplier: 3.5
+  rotateMultiplier: 5
   jumpProportion: 0
   jumpCDProportion: 0
 --- !u!54 &1069749182
