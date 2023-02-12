@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerManager : MonoBehaviour
+[CreateAssetMenu(fileName = "PlayerManagerData", menuName = "ScriptableObjects/PlayerManagerData")]
+public class PlayerManagerData : ScriptableObject
 {
     [SerializeField]
     private bool debugMessages = true;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TimeData", menuName = "ScriptableObjects/TimeSettings", order = 1)]
+[CreateAssetMenu(fileName = "TimeData", menuName = "ScriptableObjects/TimeSettings")]
 public class TimeSettings : ScriptableObject
 {
     public float baseTimeScale = 1;
