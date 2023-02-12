@@ -24,7 +24,7 @@ public class PlayerManagerData : ScriptableObject
     [HideInInspector]
     public PlayerInputManager inputManager;
 
-    public Dictionary<int, PlayerInput> players { get; private set; } = new();
+    public Dictionary<PlayerInput, int> players { get; private set; } = new();
     public int PlayerCount { get; private set; } = 0;
 
     private void OnEnable()
@@ -37,7 +37,7 @@ public class PlayerManagerData : ScriptableObject
     {
         if (debugMessages) { Debug.Log("Attempting join"); }
 
-        while (!players.TryAdd(PlayerCount, playerInput))
+        while (!players.TryAdd(playerInput, PlayerCount))
         {
             if (debugMessages) { Debug.Log("Could not join at player number: " + PlayerCount); }
             PlayerCount++;
@@ -51,7 +51,7 @@ public class PlayerManagerData : ScriptableObject
     public GameObject RemovePlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting remove"); }
-        if (players.Remove(PlayerCount))
+        if (players.Remove(playerInput))
         {
             if (debugMessages) { Debug.Log("Removed player number " + PlayerCount); }
             PlayerCount--;
@@ -63,9 +63,9 @@ public class PlayerManagerData : ScriptableObject
 
     public void SpawnPlayers()
     {
-        foreach (KeyValuePair<int, PlayerInput> player in players)
+        foreach (KeyValuePair<PlayerInput, int> player in players)
         {
-            inputManager.JoinPlayer(player.Key, player.Key, player.Value.currentControlScheme, player.Value.devices.ToArray());
+            inputManager.JoinPlayer(player.Value, player.Value, player.Key.currentControlScheme, player.Key.devices.ToArray());
         }
     }
 

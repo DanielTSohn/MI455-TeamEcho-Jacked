@@ -29,10 +29,10 @@ public class SelectPlayers : MonoBehaviour
     private void AlignPlayers()
     {
         List<Vector3> newPositions = managerData.GenerateSpawnPoints(leftBound.position, rightBound.position);
-        foreach(KeyValuePair<int, PlayerInput> player in managerData.players)
+        foreach(KeyValuePair<PlayerInput, int> player in managerData.players)
         {
-            player.Value.transform.position = newPositions[player.Key];
-            player.Value.gameObject.GetComponent<PlayerComponents>().JackhammerRB.constraints = RigidbodyConstraints.FreezePosition;
+            player.Key.transform.position = newPositions[player.Value];
+            player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB.constraints = RigidbodyConstraints.FreezePosition;
         }
     }
 }
