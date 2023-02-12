@@ -7,21 +7,21 @@ using DestroyIt;
 public class JackhammerMovement : MonoBehaviour
 {
     #region Components
-    [Header("Required Components")]
-    [SerializeField]
-    [Tooltip("The player on top of the jackhammer")]
-    private GameObject player;
-    [SerializeField]
-    [Tooltip("The player's rigidbody for controlling movement")]
-    private Rigidbody playerRB;
-    [SerializeField]
-    private CapsuleCollider playerCollider;
+    [Header("Game Events")]
     [SerializeField]
     private GameEvent jumpUpdate;
     [SerializeField]
     private GameEvent jumpCDUpdate;
     [SerializeField]
     private GameEvent onJump;
+
+    [Header("Component Holder")]
+    [SerializeField]
+    private PlayerComponents componentHolder;
+
+    private GameObject player;
+    private Rigidbody playerRB;
+    private CapsuleCollider playerCollider;
     #endregion
 
     #region Piston Parameters
@@ -122,36 +122,12 @@ public class JackhammerMovement : MonoBehaviour
     void Awake()
     {
         #region Component handling
-        if (player == null)
-        {
-            player = GameObject.Find("Player");
-            if (player == null)
-            {
-                Debug.LogError("No player object attatched or found!");
-            }
-            else
-            {
-                if (playerRB == null)
-                {
-                    if (!player.TryGetComponent(out playerRB))
-                    {
-                        Debug.LogError("No rigidbody attached found on the player object!");
-                    }
-                }
-            }
-        }
-        if (playerCollider == null)
-        {
-            if (player != null)
-            {
-                if (!player.TryGetComponent(out playerCollider))
-                {
-                    Debug.LogError("No capsule collider attached found on the player object!");
-                }
-            }
-        }
-        if (playerCollider != null) { initialRadius = playerCollider.radius; }
+        player = componentHolder.PlayerRoot;
+        playerRB = componentHolder.JackhammerRB;
+        playerCollider = componentHolder.PlayerCollider;
         #endregion
+        if (playerCollider != null) { initialRadius = playerCollider.radius; }
+
         StartCoroutine(DelayedStart());
     }
 

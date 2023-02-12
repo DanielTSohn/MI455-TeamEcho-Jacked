@@ -7,63 +7,102 @@ using UnityEngine.InputSystem;
 public class PlayerManagerData : ScriptableObject
 {
     [SerializeField]
+    [Tooltip("Does the object send debug messages")]
     private bool debugMessages = true;
+
+    public List<Material> Materials { get { return materials; } private set { materials = value; } }
     [SerializeField]
-    private PlayerInputManager inputManager;
-    [SerializeField]
-    private List<GameObject> prefabs;
+    [Tooltip("The index of player prefabs to automatically assign to")]
+    private List<Material> materials;
     [SerializeField]
     [Tooltip("Distance players will spawn from the center")]
     private float spawnDistance;
 
-    public Dictionary<int, PlayerInput> players { get; private set; }
-    private int playerCount = 1;
-    public void AddPlayer(PlayerInput input)
+    /// <summary>
+    /// The input manager to store players into
+    /// </summary>
+    [HideInInspector]
+    public PlayerInputManager inputManager;
+
+    public Dictionary<int, PlayerInput> players { get; private set; } = new();
+    public int PlayerCount { get; private set; } = 0;
+
+    private void OnEnable()
+    {
+        players.Clear();
+        PlayerCount = 0;
+    }
+
+    public GameObject AddPlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting join"); }
 
-        while (!players.TryAdd(playerCount, input))
+        while (!players.TryAdd(PlayerCount, playerInput))
         {
-            if (debugMessages) { Debug.Log("Could not join at player number: " + playerCount); }
-            playerCount++;
+            if (debugMessages) { Debug.Log("Could not join at player number: " + PlayerCount); }
+            PlayerCount++;
         }
-        playerCount++;
-        if (debugMessages) { Debug.Log("Joined player number " + playerCount); }
+        PlayerCount++;
+        if (debugMessages) { Debug.Log("Joined player number " + PlayerCount); }
+
+        return playerInput.gameObject;
     }
 
-    public void RemovePLayer(PlayerInput input)
+    public GameObject RemovePlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting remove"); }
-        if (players.Remove(playerCount))
+        if (players.Remove(PlayerCount))
         {
-            if (debugMessages) { Debug.Log("Removed player number " + playerCount); }
-            playerCount--;
+            if (debugMessages) { Debug.Log("Removed player number " + PlayerCount); }
+            PlayerCount--;
         }
-        else { if (debugMessages) { Debug.Log("Could not remove at player number: " + playerCount); } }
+        else { if (debugMessages) { Debug.Log("Could not remove at player number: " + PlayerCount); } }
+
+        return playerInput.gameObject;
     }
 
     public void SpawnPlayers()
     {
-        List<Vector3> spawnPoints = GenerateSpawnPoints(spawnDistance, playerCount);
-        foreach(KeyValuePair<int, PlayerInput> player in players)
+        foreach (KeyValuePair<int, PlayerInput> player in players)
         {
-            inputManager.playerPrefab = prefabs[player.Key];
-            PlayerInput temp = inputManager.JoinPlayer(player.Key, player.Key, player.Value.currentControlScheme, player.Value.devices.ToArray());
-            temp.transform.position = spawnPoints[playerCount];
+            inputManager.JoinPlayer(player.Key, player.Key, player.Value.currentControlScheme, player.Value.devices.ToArray());
         }
     }
 
-    private List<Vector3> GenerateSpawnPoints(float spawnRadius, int spawnPointsCount)
+    /// <summary>
+    /// Generates spawn points along a circle's circumference 
+    /// </summary>
+    /// <param name="spawnRadius">The radius of the circle to spawn in</param>
+    /// <returns>List of spawn points along the circle</returns>
+    public List<Vector3> GenerateSpawnPoints(float spawnRadius)
     {
         List<Vector3> spawnPoints = new();
-        float angleBetween = 360 / spawnPointsCount * Mathf.Deg2Rad;
+        float angleBetween = 360 / PlayerCount * Mathf.Deg2Rad;
 
         float angle = 0;
-        for(int i = 1; i <= spawnPointsCount; i ++)
+        for (int i = 0; i < PlayerCount; i++)
         {
             spawnPoints.Add(new Vector3(spawnRadius * Mathf.Cos(angle), 0, spawnRadius * Mathf.Sin(angle)));
-            if (debugMessages) { Debug.Log("Spawn point: " + i + " at " + spawnPoints[i]); }
+            if (debugMessages) { Debug.Log("Spawn point: " + (i + 1) + " at " + spawnPoints[i] + " proportion " + (i + 1) + "/" + PlayerCount + " = " + ((float)(i + 1) / (PlayerCount + 1))); }
             angle += angleBetween;
+        }
+
+        return spawnPoints;
+    }
+
+    /// <summary>
+    /// Generates spawn points between begin point and end point (inclusive), distributes evenly between
+    /// </summary>
+    /// <param name="begin">Start point to spawn from</param>
+    /// <param name="end">Ending point to spawning</param>
+    /// <returns>List of spawn points along given begin and end locations</returns>
+    public List<Vector3> GenerateSpawnPoints(Vector3 begin, Vector3 end)
+    {
+        List<Vector3> spawnPoints = new();
+        for (int i = 0; i < PlayerCount; i++)
+        {
+            spawnPoints.Add(Vector3.Lerp(begin, end, (float)i+1 / (PlayerCount+1)));
+            if (debugMessages) { Debug.Log("Spawn point: " + (i+1) + " at " + spawnPoints[i] + " proportion " + (i+1) + "/" + PlayerCount + " = " + ((float)(i+1)/(PlayerCount+1))); }
         }
 
         return spawnPoints;

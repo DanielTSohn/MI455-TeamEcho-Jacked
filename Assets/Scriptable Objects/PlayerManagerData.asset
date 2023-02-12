@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: PlayerManagerData
   m_EditorClassIdentifier: 
   debugMessages: 1
+  materials:
+  - {fileID: 2100000, guid: 0bee7fc5fcbb9f840bc791d2047b4f40, type: 2}
+  - {fileID: 2100000, guid: 6e69ed3e2ebaa7144a6f5119bf1ac748, type: 2}
+  spawnDistance: 5
   inputManager: {fileID: 0}
-  prefabs: []
-  spawnDistance: 0
