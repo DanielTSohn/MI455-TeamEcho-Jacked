@@ -117,6 +117,7 @@ public class JackhammerMovement : MonoBehaviour
 
     #region Misc Variables
     [SerializeField] public Color playerColorIdentifier { get; private set; } = Color.red;
+    [SerializeField] private PlayerGridInteraction pgi;
     #endregion
 
     void Awake()
@@ -127,6 +128,7 @@ public class JackhammerMovement : MonoBehaviour
         playerCollider = componentHolder.PlayerCollider;
         #endregion
         if (playerCollider != null) { initialRadius = playerCollider.radius; }
+        pgi = GetComponent<PlayerGridInteraction>();
 
         StartCoroutine(DelayedStart());
     }
@@ -218,6 +220,11 @@ public class JackhammerMovement : MonoBehaviour
             {
                 if (tile != null)
                 {
+                    if(tile.TryGetComponent(out Cell cell))
+                    {
+                        pgi.OnCellHit(cell.gridLocation);
+                    }
+
                     validTerrain = true;
                     if (tile.TryGetComponent(out Destructible tileDestroy))
                     {

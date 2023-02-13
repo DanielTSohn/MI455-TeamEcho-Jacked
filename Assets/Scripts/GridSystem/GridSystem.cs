@@ -20,6 +20,8 @@ public class GridSystem : MonoBehaviour
 
     [HideInInspector] public Dictionary<Vector3Int, GameObject> cellsHash = new Dictionary<Vector3Int, GameObject>();
 
+    private int totalRemainingCells = 0;
+
     [ExecuteInEditMode]
     public void InitializeTiles()
     {
@@ -30,17 +32,18 @@ public class GridSystem : MonoBehaviour
             {
                 RemoveTiles();
             }
-            for (int i = 0; i < gridWidth; i++)
+            /*for (int i = 0; i < gridWidth; i++)
             {
                 for (int j = 0; j < gridHeight; j++)
                 {
-                    Vector3Int vIntLocation = new Vector3Int(i, j, 0);
+                    Vector3Int vIntLocation = new Vector3Int(i, 0, j);
                     Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
                     var newCell = Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
+                    newCell.GetComponent<Cell>().gridLocation = vIntLocation;
                     cellsHash.Add(vIntLocation, newCell);
-                    AssignAsNeighbor(newCell, i, j);
+                    //AssignAsNeighbor(newCell, i, j);
                 }
-            }
+            }*/
         }
 #endif
     }
@@ -55,9 +58,27 @@ public class GridSystem : MonoBehaviour
         cellsHash.Clear();
     }
 
+    private void Awake()
+    {
+        for (int i = 0; i < gridWidth; i++)
+        {
+            for (int j = 0; j < gridHeight; j++)
+            {
+                Vector3Int vIntLocation = new Vector3Int(i, j, 0);
+                Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
+                var newCell = Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
+                newCell.GetComponent<Cell>().gridLocation = vIntLocation;
+                cellsHash.Add(vIntLocation, newCell);
+                //AssignAsNeighbor(newCell, i, j);
+            }
+        }
+
+        totalRemainingCells = gridWidth * gridHeight;
+    }
+
     // Takes a gameobject "Cell", and checks if it has neighbors. If so,
     // it assigns itself as a neighbor to each surrounding cell
-    private void AssignAsNeighbor(GameObject g, int i, int j)
+    /*private void AssignAsNeighbor(GameObject g, int i, int j)
     {
         GameObject neighbor;
         // If there is a cell to the left of this one, make this current cell its right neighbor
@@ -80,5 +101,11 @@ public class GridSystem : MonoBehaviour
         {
             neighbor.GetComponent<Cell>().neighbors.Add(g);
         }
-    }
+    }*/
+
+    public int GetGridWidth() { return gridWidth; }
+    public int GetGridHeight() { return gridHeight; }
+
+    public int GetTotalRemainingCells() { return totalRemainingCells; }
+    public void DecrementTotalRemainingCells() { totalRemainingCells--; }
 }

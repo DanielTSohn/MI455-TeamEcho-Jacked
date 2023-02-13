@@ -242,6 +242,7 @@ public class JackhammerStandard : MonoBehaviour
             {
                 if(tile != null)
                 {
+                    
                     validTerrain = true;
                     if(tile.TryGetComponent(out Destructible tileDestroy))
                     {
