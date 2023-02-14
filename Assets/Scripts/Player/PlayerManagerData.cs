@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "PlayerManagerData", menuName = "ScriptableObjects/PlayerManagerData")]
-public class PlayerManagerData : ScriptableObject
+public class PlayerManagerData : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Does the object send debug messages")]
@@ -24,20 +24,39 @@ public class PlayerManagerData : ScriptableObject
     [HideInInspector]
     public PlayerInputManager inputManager;
 
-    public Dictionary<PlayerInput, int> players { get; private set; } = new();
+    public Dictionary<PlayerInput, int> Players { get; private set; } = new();
     public int PlayerCount { get; private set; } = 0;
 
-    private void OnEnable()
+    public static PlayerManagerData Instance { get; private set; }
+
+    private void Awake()
     {
-        players.Clear();
-        PlayerCount = 0;
+        // Singleton handling
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            transform.parent = null;
+            DontDestroyOnLoad(this);
+
+            ResetPlayers();
+        }
+    }
+
+    private void ResetPlayers()
+    {
+        Players.Clear();
+        PlayerCount = Players.Count;
     }
 
     public GameObject AddPlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting join"); }
 
-        while (!players.TryAdd(playerInput, PlayerCount))
+        while (!Players.TryAdd(playerInput, PlayerCount))
         {
             if (debugMessages) { Debug.Log("Could not join at player number: " + PlayerCount); }
             PlayerCount++;
@@ -51,7 +70,7 @@ public class PlayerManagerData : ScriptableObject
     public GameObject RemovePlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting remove"); }
-        if (players.Remove(playerInput))
+        if (Players.Remove(playerInput))
         {
             if (debugMessages) { Debug.Log("Removed player number " + PlayerCount); }
             PlayerCount--;
@@ -63,7 +82,7 @@ public class PlayerManagerData : ScriptableObject
 
     public void SpawnPlayers()
     {
-        foreach (KeyValuePair<PlayerInput, int> player in players)
+        foreach (KeyValuePair<PlayerInput, int> player in Players)
         {
             inputManager.JoinPlayer(player.Value, player.Value, player.Key.currentControlScheme, player.Key.devices.ToArray());
         }
