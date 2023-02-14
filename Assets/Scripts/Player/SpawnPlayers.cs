@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 public class SpawnPlayers : MonoBehaviour
 {
     [SerializeField]
-    private PlayerInputManager inputManager;
-
-    [SerializeField]
     [Tooltip("The radius the players spawn around the object this is attatched to")]
     private float spawnRadius = 5;
 
@@ -25,17 +22,21 @@ public class SpawnPlayers : MonoBehaviour
         else
         {
             Instance = this;
+            PlayerManagerData.Instance.InputManager.DisableJoining();
             SetupPlayers();
         }
     }
 
     private void SetupPlayers()
     {
-        Debug.Log(PlayerManagerData.Instance.PlayerCount);
+        Debug.Log("Spawning " + PlayerManagerData.Instance.PlayerCount + " players");
+
+        List<Vector3> spawnPoints = PlayerManagerData.Instance.GenerateSpawnPoints(spawnRadius);
         foreach(KeyValuePair<PlayerInput, int> player in PlayerManagerData.Instance.Players)
         {
-            inputManager.JoinPlayer(player.Value, player.Value, player.Key.currentControlScheme, player.Key.devices[0]);
-            Debug.Log("Joined player " + player.Value);
+            player.Key.transform.position = spawnPoints[player.Value];
+            player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB.constraints = RigidbodyConstraints.FreezeRotationY;
+            Debug.Log("Joined player " + (player.Value+1));
         }
     }
 }

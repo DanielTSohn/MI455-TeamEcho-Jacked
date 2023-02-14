@@ -10,17 +10,27 @@ public class SelectPlayers : MonoBehaviour
     [SerializeField]
     private Transform rightBound;
 
+    private void Awake()
+    {
+        PlayerManagerData.Instance.InputManager.onPlayerJoined += AddPlayer;
+        PlayerManagerData.Instance.InputManager.onPlayerJoined += RemovePlayer;
+        PlayerManagerData.Instance.InputManager.EnableJoining();
+    }
+
+    private void OnDisable()
+    {
+        PlayerManagerData.Instance.InputManager.onPlayerJoined -= AddPlayer;
+        PlayerManagerData.Instance.InputManager.onPlayerJoined -= RemovePlayer;
+    }
+
     public void AddPlayer(PlayerInput playerInput)
     {
-        GameObject root = PlayerManagerData.Instance.AddPlayer(playerInput);
-        PlayerComponents component = root.GetComponent<PlayerComponents>();
-        component.ModelSwapper.SwapJackhammerMaterial(PlayerManagerData.Instance.Materials[PlayerManagerData.Instance.PlayerCount-1]);
         AlignPlayers();
     }
     
     public void RemovePlayer(PlayerInput playerInput)
     {
-        PlayerManagerData.Instance.RemovePlayer(playerInput);
+        AlignPlayers();
     }
 
     private void AlignPlayers()

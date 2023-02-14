@@ -2,10 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "PlayerManagerData", menuName = "ScriptableObjects/PlayerManagerData")]
 public class PlayerManagerData : MonoBehaviour
 {
+    public PlayerInputManager InputManager { get { return inputManager; } private set { } }
+    [SerializeField]
+    [Tooltip("The input manager to manage local multiplayer")]
+    private PlayerInputManager inputManager;
+
     [SerializeField]
     [Tooltip("Does the object send debug messages")]
     private bool debugMessages = true;
@@ -17,12 +23,6 @@ public class PlayerManagerData : MonoBehaviour
     [SerializeField]
     [Tooltip("Distance players will spawn from the center")]
     private float spawnDistance;
-
-    /// <summary>
-    /// The input manager to store players into
-    /// </summary>
-    [HideInInspector]
-    public PlayerInputManager inputManager;
 
     public Dictionary<PlayerInput, int> Players { get; private set; } = new();
     public int PlayerCount { get; private set; } = 0;
@@ -42,8 +42,16 @@ public class PlayerManagerData : MonoBehaviour
             transform.parent = null;
             DontDestroyOnLoad(this);
 
+            InputManager.onPlayerJoined += AddPlayer;
+            InputManager.onPlayerLeft += RemovePlayer;
             ResetPlayers();
         }
+    }
+
+    private void OnDestroy()
+    {
+        InputManager.onPlayerJoined -= AddPlayer;
+        InputManager.onPlayerLeft -= RemovePlayer;
     }
 
     private void ResetPlayers()
@@ -52,7 +60,7 @@ public class PlayerManagerData : MonoBehaviour
         PlayerCount = Players.Count;
     }
 
-    public GameObject AddPlayer(PlayerInput playerInput)
+    public void AddPlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting join"); }
 
@@ -63,11 +71,9 @@ public class PlayerManagerData : MonoBehaviour
         }
         PlayerCount++;
         if (debugMessages) { Debug.Log("Joined player number " + PlayerCount); }
-
-        return playerInput.gameObject;
     }
 
-    public GameObject RemovePlayer(PlayerInput playerInput)
+    public void RemovePlayer(PlayerInput playerInput)
     {
         if (debugMessages) { Debug.Log("Attempting remove"); }
         if (Players.Remove(playerInput))
@@ -76,16 +82,6 @@ public class PlayerManagerData : MonoBehaviour
             PlayerCount--;
         }
         else { if (debugMessages) { Debug.Log("Could not remove at player number: " + PlayerCount); } }
-
-        return playerInput.gameObject;
-    }
-
-    public void SpawnPlayers()
-    {
-        foreach (KeyValuePair<PlayerInput, int> player in Players)
-        {
-            inputManager.JoinPlayer(player.Value, player.Value, player.Key.currentControlScheme, player.Key.devices.ToArray());
-        }
     }
 
     /// <summary>

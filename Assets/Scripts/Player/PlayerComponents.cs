@@ -35,6 +35,7 @@ public class PlayerComponents : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(this);
         if (topRoot == null) { topRoot = gameObject; }
         if(topRoot != null)
         {
