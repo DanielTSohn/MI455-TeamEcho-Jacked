@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "PlayerManagerData", menuName = "ScriptableObjects/PlayerManagerData")]
 public class PlayerManagerData : MonoBehaviour
@@ -26,6 +25,8 @@ public class PlayerManagerData : MonoBehaviour
 
     public Dictionary<PlayerInput, int> Players { get; private set; } = new();
     public int PlayerCount { get; private set; } = 0;
+    public bool SceneReady { get; private set; } = false;
+
 
     public static PlayerManagerData Instance { get; private set; }
 
@@ -58,6 +59,7 @@ public class PlayerManagerData : MonoBehaviour
     {
         Players.Clear();
         PlayerCount = Players.Count;
+        inputManager.DisableJoining();
     }
 
     public void AddPlayer(PlayerInput playerInput)

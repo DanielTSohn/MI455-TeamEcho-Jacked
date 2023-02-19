@@ -9,12 +9,22 @@ public class SelectPlayers : MonoBehaviour
     private Transform leftBound;
     [SerializeField]
     private Transform rightBound;
+    public static SelectPlayers Instance { get; private set; }
 
     private void Awake()
     {
         PlayerManagerData.Instance.InputManager.onPlayerJoined += AddPlayer;
         PlayerManagerData.Instance.InputManager.onPlayerJoined += RemovePlayer;
-        PlayerManagerData.Instance.InputManager.EnableJoining();
+        // Singleton handling
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            PlayerManagerData.Instance.InputManager.EnableJoining();
+        }
     }
 
     private void OnDisable()
@@ -39,7 +49,9 @@ public class SelectPlayers : MonoBehaviour
         foreach(KeyValuePair<PlayerInput, int> player in PlayerManagerData.Instance.Players)
         {
             player.Key.transform.position = newPositions[player.Value];
-            player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB.constraints = RigidbodyConstraints.FreezePosition;
+            Rigidbody jackRB = player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB;
+            jackRB.constraints = RigidbodyConstraints.FreezePosition;
+            jackRB.isKinematic = false;
         }
     }
 }
