@@ -290,6 +290,6 @@ public class JackhammerMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(player.transform.TransformPoint(new Vector3(0, sphereCastVerticalOffset, 0)), initialRadius + 0.05f);
+        //Gizmos.DrawSphere(player.transform.TransformPoint(new Vector3(0, sphereCastVerticalOffset, 0)), initialRadius + 0.05f);
     }
 }

@@ -1158,7 +1158,7 @@ PrefabInstance:
     - target: {fileID: 9149512510491945515, guid: 320fe64713830c048869c35fc1d6c52a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.7
+      value: -35.8
       objectReference: {fileID: 0}
     - target: {fileID: 9149512510491945515, guid: 320fe64713830c048869c35fc1d6c52a,
         type: 3}
@@ -1250,7 +1250,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 21.951786
+  field of view: 26.459007
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
