@@ -32,18 +32,18 @@ public class GridSystem : MonoBehaviour
             {
                 RemoveTiles();
             }
-            /*for (int i = 0; i < gridWidth; i++)
+            for (int i = 0; i < gridWidth; i++)
             {
                 for (int j = 0; j < gridHeight; j++)
                 {
-                    Vector3Int vIntLocation = new Vector3Int(i, 0, j);
+                    Vector3Int vIntLocation = new Vector3Int(i, j, 0);
                     Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
                     var newCell = Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
                     newCell.GetComponent<Cell>().gridLocation = vIntLocation;
                     cellsHash.Add(vIntLocation, newCell);
                     //AssignAsNeighbor(newCell, i, j);
                 }
-            }*/
+            }
         }
 #endif
     }
@@ -75,33 +75,6 @@ public class GridSystem : MonoBehaviour
 
         totalRemainingCells = gridWidth * gridHeight;
     }
-
-    // Takes a gameobject "Cell", and checks if it has neighbors. If so,
-    // it assigns itself as a neighbor to each surrounding cell
-    /*private void AssignAsNeighbor(GameObject g, int i, int j)
-    {
-        GameObject neighbor;
-        // If there is a cell to the left of this one, make this current cell its right neighbor
-        if (cellsHash.TryGetValue(new Vector3Int(i - 1, j, 0), out neighbor))
-        {
-            neighbor.GetComponent<Cell>().neighbors.Add(g);
-        }
-        // If there is a cell to the right of this one, make this current cell its left neighbor
-        if (cellsHash.TryGetValue(new Vector3Int(i + 1, j, 0), out neighbor))
-        {
-            neighbor.GetComponent<Cell>().neighbors.Add(g);
-        }
-        // If there is a cell below this one, make this current cell its upper neighbor
-        if (cellsHash.TryGetValue(new Vector3Int(i, j - 1, 0), out neighbor))
-        {
-            neighbor.GetComponent<Cell>().neighbors.Add(g);
-        }
-        // If there is a cell above this one, make this current cell its lower neighbor
-        if (cellsHash.TryGetValue(new Vector3Int(i, j + 1, 0), out neighbor))
-        {
-            neighbor.GetComponent<Cell>().neighbors.Add(g);
-        }
-    }*/
 
     public int GetGridWidth() { return gridWidth; }
     public int GetGridHeight() { return gridHeight; }
