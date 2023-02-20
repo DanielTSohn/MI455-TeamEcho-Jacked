@@ -15,10 +15,19 @@ public class PlayerManagerData : MonoBehaviour
     [Tooltip("Does the object send debug messages")]
     private bool debugMessages = true;
 
-    public List<Material> Materials { get { return materials; } private set { materials = value; } }
+
     [SerializeField]
-    [Tooltip("The index of player prefabs to automatically assign to")]
-    private List<Material> materials;
+    private List<int> jackPlayerNumber;
+    [SerializeField]
+    private List<Material> jackMaterials;
+    public SortedDictionary<int, Material> JackMaterials { get; private set; }
+
+    [SerializeField]
+    private List<int> shirtPlayerNumber;
+    [SerializeField]
+    private List<Material> shirtMaterials;
+    public SortedDictionary<int, Material> ShirtMaterials { get; private set; }
+
     [SerializeField]
     [Tooltip("Distance players will spawn from the center")]
     private float spawnDistance;
@@ -60,6 +69,21 @@ public class PlayerManagerData : MonoBehaviour
         Players.Clear();
         PlayerCount = Players.Count;
         inputManager.DisableJoining();
+
+        if (JackMaterials == null) { JackMaterials = new(); }
+        else { JackMaterials.Clear(); }
+
+        foreach (int number in jackPlayerNumber)
+        {
+            JackMaterials.Add(number, jackMaterials[number]);
+        }
+
+        if (ShirtMaterials == null) { ShirtMaterials = new(); }
+        else { ShirtMaterials.Clear(); }
+        foreach (int number in shirtPlayerNumber)
+        {
+            ShirtMaterials.Add(number, shirtMaterials[number]);
+        }
     }
 
     public void AddPlayer(PlayerInput playerInput)
@@ -71,6 +95,9 @@ public class PlayerManagerData : MonoBehaviour
             if (debugMessages) { Debug.Log("Could not join at player number: " + PlayerCount); }
             PlayerCount++;
         }
+        PlayerModelSwapper modelSwap = playerInput.GetComponent<PlayerComponents>().ModelSwapper;
+        modelSwap.SwapJackhammerMaterial(jackMaterials[PlayerCount]);
+        modelSwap.SwapPlayerMaterial(shirtMaterials[PlayerCount]);
         PlayerCount++;
         if (debugMessages) { Debug.Log("Joined player number " + PlayerCount); }
     }
@@ -118,8 +145,8 @@ public class PlayerManagerData : MonoBehaviour
         List<Vector3> spawnPoints = new();
         for (int i = 0; i < PlayerCount; i++)
         {
-            spawnPoints.Add(Vector3.Lerp(begin, end, (float)i+1 / (PlayerCount+1)));
-            if (debugMessages) { Debug.Log("Spawn point: " + (i+1) + " at " + spawnPoints[i] + " proportion " + (i+1) + "/" + PlayerCount + " = " + ((float)(i+1)/(PlayerCount+1))); }
+            spawnPoints.Add(Vector3.Lerp(begin, end, (float)i + 1 / (PlayerCount + 1)));
+            if (debugMessages) { Debug.Log("Spawn point: " + (i + 1) + " at " + spawnPoints[i] + " proportion " + (i + 1) + "/" + PlayerCount + " = " + ((float)(i + 1) / (PlayerCount + 1))); }
         }
 
         return spawnPoints;

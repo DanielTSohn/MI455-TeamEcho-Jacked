@@ -236,7 +236,7 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: JackHammer
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 7606106544440039313}
 --- !u!82 &2558084704245277400
 AudioSource:
   m_ObjectHideFlags: 0
@@ -568,7 +568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jackhammerRenderer: {fileID: 8109275578827543627}
-  playerRenderer: {fileID: 0}
+  playerRenderer: {fileID: 3753311921345300633}
 --- !u!1 &7748745922467313054
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,6 +849,12 @@ PrefabInstance:
 --- !u!4 &2620353443454874614 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e9dd616845506b1479d5e3af025d849a,
+    type: 3}
+  m_PrefabInstance: {fileID: 2582784629314688029}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3753311921345300633 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: e9dd616845506b1479d5e3af025d849a,
     type: 3}
   m_PrefabInstance: {fileID: 2582784629314688029}
   m_PrefabAsset: {fileID: 0}
