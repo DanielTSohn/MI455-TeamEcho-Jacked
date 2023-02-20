@@ -36,6 +36,7 @@ public class SpawnPlayers : MonoBehaviour
         foreach(KeyValuePair<PlayerInput, int> player in PlayerManagerData.Instance.Players)
         {
             player.Key.transform.position = spawnPoints[player.Value];
+            player.Key.gameObject.transform.rotation = Quaternion.identity;
             Rigidbody jackRB = player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB;
             jackRB.constraints = RigidbodyConstraints.FreezeRotationY;
             jackRB.isKinematic = false;

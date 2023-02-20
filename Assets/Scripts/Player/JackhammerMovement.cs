@@ -149,7 +149,7 @@ public class JackhammerMovement : MonoBehaviour
     private void MovePlayer()
     {
         playerRB.angularVelocity = Vector3.zero;
-        playerRB.AddRelativeTorque(new Vector3(balanceInput.y, 0, -balanceInput.x) * BalanceMultiplier, ForceMode.VelocityChange);
+        playerRB.AddRelativeTorque(new Vector3(-balanceInput.y, 0, balanceInput.x) * BalanceMultiplier, ForceMode.VelocityChange);
     }
 
     private void RotatePlayer()
