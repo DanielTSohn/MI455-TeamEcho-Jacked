@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "PlayerManagerData", menuName = "ScriptableObjects/PlayerManagerData")]
 public class PlayerManagerData : MonoBehaviour
 {
     public PlayerInputManager InputManager { get { return inputManager; } private set { } }

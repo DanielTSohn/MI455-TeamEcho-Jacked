@@ -18,7 +18,7 @@ public class GridSystem : MonoBehaviour
     [Tooltip("Cell class to spawn")]
     [SerializeField] private GameObject cell;
 
-    [HideInInspector] public Dictionary<Vector3Int, GameObject> cellsHash = new Dictionary<Vector3Int, GameObject>();
+    public Dictionary<Vector3Int, GameObject> cellsHash { get; private set; } = new();
 
     private int totalRemainingCells = 0;
 
@@ -28,20 +28,22 @@ public class GridSystem : MonoBehaviour
 #if UNITY_EDITOR
         if (TryGetComponent(out grid))
         {
-            if(cellsHash.Count > 0)
-            {
-                RemoveTiles();
-            }
+            if(cellsHash != null) { RemoveTiles(); }
+            else { cellsHash = new(); }
             for (int i = 0; i < gridWidth; i++)
             {
                 for (int j = 0; j < gridHeight; j++)
                 {
+                    /*
                     Vector3Int vIntLocation = new Vector3Int(i, j, 0);
                     Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
                     var newCell = Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
                     newCell.GetComponent<Cell>().gridLocation = vIntLocation;
-                    cellsHash.Add(vIntLocation, newCell);
                     //AssignAsNeighbor(newCell, i, j);
+                    */
+                    Vector3Int vIntLocation = new Vector3Int(i, j, 0);
+                    Vector3 WorldLocation = grid.CellToWorld(vIntLocation);
+                    Instantiate(cell, WorldLocation, grid.transform.rotation, transform);
                 }
             }
         }
@@ -55,11 +57,18 @@ public class GridSystem : MonoBehaviour
         {
             DestroyImmediate(transform.GetChild(0).gameObject);
         }
-        cellsHash.Clear();
     }
 
     private void Awake()
     {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            GameObject currCell = transform.GetChild(i).gameObject;
+            Vector3Int gridPosition = grid.WorldToCell(currCell.transform.position);
+            currCell.GetComponent<Cell>().gridLocation = gridPosition;
+            cellsHash.Add(gridPosition, currCell);
+        }
+        /*
         for (int i = 0; i < gridWidth; i++)
         {
             for (int j = 0; j < gridHeight; j++)
@@ -72,6 +81,8 @@ public class GridSystem : MonoBehaviour
                 //AssignAsNeighbor(newCell, i, j);
             }
         }
+        */
+        Debug.Log(cellsHash.Count + " cells generated");
 
         totalRemainingCells = gridWidth * gridHeight;
     }
