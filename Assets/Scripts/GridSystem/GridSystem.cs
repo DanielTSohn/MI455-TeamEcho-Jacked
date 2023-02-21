@@ -68,7 +68,8 @@ public class GridSystem : MonoBehaviour
             currCell.GetComponent<Cell>().gridLocation = gridPosition;
             cellsHash.Add(gridPosition, currCell);
         }
-        /*
+        /*RemoveTiles();
+        
         for (int i = 0; i < gridWidth; i++)
         {
             for (int j = 0; j < gridHeight; j++)
@@ -80,11 +81,11 @@ public class GridSystem : MonoBehaviour
                 cellsHash.Add(vIntLocation, newCell);
                 //AssignAsNeighbor(newCell, i, j);
             }
-        }
-        */
+        }*/
+        
         Debug.Log(cellsHash.Count + " cells generated");
 
-        totalRemainingCells = gridWidth * gridHeight;
+        totalRemainingCells = transform.childCount;
     }
 
     public int GetGridWidth() { return gridWidth; }

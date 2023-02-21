@@ -11,6 +11,7 @@ public class PlayerGridInteraction : MonoBehaviour
     [Tooltip("Delay between individual BFS steps (helps with optimization)")]
     [SerializeField] private float fillDelay = .2f;
 
+    private HashSet<GridSystem> gridSystems = new HashSet<GridSystem>();
     private GridSystem gs;
     private Cell currentCell;
 
@@ -43,12 +44,12 @@ public class PlayerGridInteraction : MonoBehaviour
             Vector3Int neighborPos = node + direction;
             if (gs.cellsHash.TryGetValue(neighborPos, out cellCheck))
             {
-                if (cellCheck) { validCells.Add(cellCheck.GetComponent<Cell>()); print("Valid neighbor found: " + neighborPos); }
+                if (cellCheck) { validCells.Add(cellCheck.GetComponent<Cell>()); }
             }
         }
     }
 
-    private void FindValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
+    /*private void FindValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
     {
         //validCells = new Dictionary<Vector3Int, Cell>();
         Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
@@ -61,7 +62,7 @@ public class PlayerGridInteraction : MonoBehaviour
                 if (cellCheck) { validCells.Add(neighborPos, cellCheck.GetComponent<Cell>()); }
             }
         }
-    }
+    }*/
 
     private void FloodValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
     {
@@ -110,17 +111,17 @@ public class PlayerGridInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gs = GameObject.FindGameObjectWithTag("GridSystem").GetComponent<GridSystem>();
+        var thing = GameObject.FindGameObjectsWithTag("GridSystem");
+        for (int i = 0; i < thing.Length; i++)
+        {
+            gridSystems.Add(thing[i].GetComponent<GridSystem>());
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnCellHit(Vector3Int v, GridSystem g)
     {
-        
-    }
-
-    public void OnCellHit(Vector3Int v)
-    {
+        if (gridSystems.Contains(g)) { gs = g; }
+        else { print("Grid system not found for active cell"); return; }
         gs.DecrementTotalRemainingCells();
         // Get reference to the cell that was hit
         currentCell = gs.cellsHash[v].GetComponent<Cell>();
@@ -199,7 +200,7 @@ public class PlayerGridInteraction : MonoBehaviour
             // An optimization wherein if a tile we're about to check has already been used in
             // a separate DFS, we will skip this DFS, since we know it's going to cover the same
             // tiles as the previous one
-            /*foreach(Dictionary<Vector3Int, Cell> d in activeHashSets)
+            /*foreach(Dictionary<Vector3Int, Cell> d in activeCutoutInstances)
             {
                 if (d !=cutoutInstance)
                 {

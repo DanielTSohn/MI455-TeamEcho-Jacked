@@ -222,7 +222,7 @@ public class JackhammerMovement : MonoBehaviour
                 {
                     if(tile.TryGetComponent(out Cell cell))
                     {
-                        pgi.OnCellHit(cell.gridLocation);
+                        pgi.OnCellHit(cell.gridLocation, cell.GetComponentInParent<GridSystem>());
                     }
 
                     validTerrain = true;
