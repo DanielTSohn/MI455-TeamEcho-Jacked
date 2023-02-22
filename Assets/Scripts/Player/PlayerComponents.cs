@@ -9,9 +9,17 @@ public class PlayerComponents : MonoBehaviour
     [SerializeField]
     private PlayerModelSwapper modelSwapper;
 
-    public JackhammerMovement JackMovement { get { return jackMovement; } set { jackMovement = value; } }
+    public Camera PlayerCamera { get { return playerCamera; } set { playerCamera = value; } }
     [SerializeField]
-    private JackhammerMovement jackMovement;
+    private Camera playerCamera;
+
+    public GameObject VirtualCamera { get { return virtualCamera; } set { virtualCamera = value; } }
+    [SerializeField]
+    private GameObject virtualCamera;
+
+    public PlayerMovement PlayerMovement { get { return playerMovement; } set { playerMovement = value; } }
+    [SerializeField]
+    private PlayerMovement playerMovement;
 
     public Rigidbody JackhammerRB { get { return jackhammerRB; } set { jackhammerRB = value; } }
     [SerializeField]
@@ -77,9 +85,9 @@ public class PlayerComponents : MonoBehaviour
                         Debug.LogError("No model swapper script attatched to player!");
                     }
                 }
-                if(jackMovement == null)
+                if(playerMovement == null)
                 {
-                    if(!playerRoot.TryGetComponent(out jackMovement))
+                    if(!playerRoot.TryGetComponent(out playerMovement))
                     {
                         Debug.LogError("No movement script attatched to player!");
                     }

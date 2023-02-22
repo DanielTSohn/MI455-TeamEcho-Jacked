@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using Cinemachine;
 public class SelectPlayers : MonoBehaviour
 {
     [SerializeField]
@@ -48,10 +48,25 @@ public class SelectPlayers : MonoBehaviour
         List<Vector3> newPositions = PlayerManagerData.Instance.GenerateSpawnPoints(leftBound.position, rightBound.position);
         foreach(KeyValuePair<PlayerInput, int> player in PlayerManagerData.Instance.Players)
         {
-            player.Key.transform.position = newPositions[player.Value];
-            Rigidbody jackRB = player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB;
-            jackRB.constraints = RigidbodyConstraints.FreezePosition;
-            jackRB.isKinematic = false;
+            PlayerComponents components = player.Key.gameObject.GetComponent<PlayerComponents>();
+            components.JackhammerRB.constraints = RigidbodyConstraints.FreezeRotation;
+            components.JackhammerRB.isKinematic = false;
+            components.JackhammerRB.useGravity = true;
+            components.JackhammerRB.transform.position = transform.position + newPositions[player.Value];
+            LayerMask viewLayers = new();
+            viewLayers |= (1 << 0);
+            viewLayers |= (1 << 1);
+            viewLayers |= (1 << 2);
+            viewLayers |= (1 << 4);
+            viewLayers |= (1 << 5);
+            viewLayers |= (1 << 6);
+            viewLayers |= (1 << 7);
+            viewLayers |= (1 << 8);
+            viewLayers |= (1 << 9);
+            viewLayers |= (1 << 10 + player.Value);
+            components.PlayerCamera.cullingMask = viewLayers;
+            components.VirtualCamera.GetComponent<CinemachineInputProvider>().PlayerIndex = player.Value;
+            components.VirtualCamera.layer = player.Value + 10;
         }
     }
 }

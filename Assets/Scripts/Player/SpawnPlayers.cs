@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using Cinemachine;
 public class SpawnPlayers : MonoBehaviour
 {
     [SerializeField]
@@ -38,11 +38,27 @@ public class SpawnPlayers : MonoBehaviour
         List<Vector3> spawnPoints = PlayerManagerData.Instance.GenerateSpawnPoints(spawnRadius);
         foreach(KeyValuePair<PlayerInput, int> player in PlayerManagerData.Instance.Players)
         {
-            player.Key.transform.position = spawnPoints[player.Value];
-            Rigidbody jackRB = player.Key.gameObject.GetComponent<PlayerComponents>().JackhammerRB;
-            jackRB.constraints = RigidbodyConstraints.FreezeRotationY;
-            jackRB.isKinematic = false;
-            player.Key.gameObject.transform.LookAt(spawnPoint);
+            PlayerComponents components = player.Key.gameObject.GetComponent<PlayerComponents>();
+            components.JackhammerRB.constraints = RigidbodyConstraints.FreezeRotation;
+            components.JackhammerRB.isKinematic = false;
+            components.JackhammerRB.useGravity = true;
+            components.PlayerRoot.gameObject.transform.LookAt(spawnPoint);
+            components.JackhammerRB.transform.position = spawnPoint.position + spawnPoints[player.Value];
+            LayerMask viewLayers = new();
+            viewLayers |= (1 << 0);
+            viewLayers |= (1 << 1);
+            viewLayers |= (1 << 2);
+            viewLayers |= (1 << 4);
+            viewLayers |= (1 << 5);
+            viewLayers |= (1 << 6);
+            viewLayers |= (1 << 7);
+            viewLayers |= (1 << 8);
+            viewLayers |= (1 << 9);
+            viewLayers |= (1 << 10 + player.Value);
+            components.PlayerCamera.cullingMask = viewLayers;
+            components.VirtualCamera.GetComponent<CinemachineInputProvider>().PlayerIndex = player.Value;
+            components.VirtualCamera.layer = player.Value + 10;
+
             Debug.Log("Joined player " + (player.Value+1));
         }
 
