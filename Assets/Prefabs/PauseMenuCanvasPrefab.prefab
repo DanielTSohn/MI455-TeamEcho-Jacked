@@ -1379,7 +1379,7 @@ GameObject:
   - component: {fileID: 2544198848092475969}
   - component: {fileID: 8400746652889231315}
   m_Layer: 5
-  m_Name: PauseMenuCanvas
+  m_Name: PauseMenuCanvasPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
