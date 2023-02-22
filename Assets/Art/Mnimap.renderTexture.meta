@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Art/Mnimap.renderTexture.meta
 guid: 9344df9b4d34e1d4dab58c7f3de01c43
 NativeFormatImporter:
+========
+guid: fdf09afde87e8e440a6e331d1850add6
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/Plugins/FMOD/platforms/mac/lib/fmodstudio.bundle/Contents/Info.plist.meta
   externalObjects: {}
   mainObjectFileID: 8400000
   userData: 

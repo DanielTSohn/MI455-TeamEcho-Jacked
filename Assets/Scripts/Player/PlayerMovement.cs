@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Control Parameters")]
     [Tooltip("The multiplier to the input 'balance'")]
     private float movementMultiplier = 1;
+    [SerializeField] private PlayerGridInteraction pgi;
     #endregion
 
     #region Status Variables
@@ -96,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
     private Collider[] terrains = new Collider[10];
     private float jumpProportion = 0;
     private float jumpCDProportion = 0;
+
     #endregion
 
     void Awake()
@@ -125,7 +127,12 @@ public class PlayerMovement : MonoBehaviour
             Grounded = true; 
             foreach(Collider collider in terrains)
             {
-                if(collider.TryGetComponent(out Destructible destructible))
+                if (collider.TryGetComponent(out Cell cell))
+                {
+                    pgi.OnCellHit(cell.gridLocation, cell.GetComponentInParent<GridSystem>());
+                }
+
+                if (collider.TryGetComponent(out Destructible destructible))
                 {
                     destructible.ApplyDamage(1);
                 }

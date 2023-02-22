@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Art/Materials/Jackhammer1_Base_color.mat.meta
 guid: 3039a54b4512f5f41b7e635effbd797d
 NativeFormatImporter:
+========
+guid: 4b057b2355b6ec746a1feb45b0637867
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/Sound/FMOD Build/Build/Desktop/Master.strings.bank.meta
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
