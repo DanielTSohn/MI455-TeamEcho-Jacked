@@ -785,6 +785,7 @@ GameObject:
   - component: {fileID: 8987878781757687083}
   - component: {fileID: 4513324343389950634}
   - component: {fileID: -390507826216423966}
+  - component: {fileID: 8953309437371318773}
   m_Layer: 6
   m_Name: FinalPlayer
   m_TagString: Untagged
@@ -940,7 +941,7 @@ MonoBehaviour:
   maxJumpHoldTime: 2
   jumpCooldown: 1
   movementMultiplier: 15
-  pgi: {fileID: 0}
+  pgi: {fileID: 8953309437371318773}
 --- !u!114 &-390507826216423966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,6 +972,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8953309437371318773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6979219050071912923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f9d2b94d1cd97488348430e860f2cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCutoutBreadthSize: 25
+  fillDelay: 0.2
+  debugSphere: {fileID: 0}
 --- !u!1 &6979219051152225798
 GameObject:
   m_ObjectHideFlags: 0
