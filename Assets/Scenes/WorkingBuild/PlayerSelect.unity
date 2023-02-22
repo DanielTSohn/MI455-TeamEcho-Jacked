@@ -850,7 +850,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310624078}
-  m_LocalRotation: {x: 0.04460712, y: -0.013989898, z: 0.00062473223, w: 0.9989065}
+  m_LocalRotation: {x: 0.04460712, y: -0.0139899, z: 0.00062473235, w: 0.9989065}
   m_LocalPosition: {x: 2, y: 13.7, z: -65.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1340,9 +1340,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1556863107}
   - component: {fileID: 1556863106}
-  - component: {fileID: 1556863105}
   - component: {fileID: 1556863108}
   - component: {fileID: 1556863109}
+  - component: {fileID: 1556863110}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1350,14 +1350,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1556863105
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1556863104}
-  m_Enabled: 1
 --- !u!20 &1556863106
 Camera:
   m_ObjectHideFlags: 0
@@ -1383,7 +1375,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 29.152084
+  field of view: 25.966879
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1408,7 +1400,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556863104}
-  m_LocalRotation: {x: 0.04460712, y: -0.013989898, z: 0.00062473223, w: 0.9989065}
+  m_LocalRotation: {x: 0.04460712, y: -0.0139899, z: 0.00062473235, w: 0.9989065}
   m_LocalPosition: {x: 2, y: 13.7, z: -65.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1483,6 +1475,19 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1556863110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556863104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &1923312344
 GameObject:
   m_ObjectHideFlags: 0

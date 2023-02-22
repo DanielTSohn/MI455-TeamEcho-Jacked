@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Prefabs/New Lens Flare (SRP).asset.meta
 guid: d1b058cb2f07ea14caaf5226aa460a7d
 NativeFormatImporter:
+========
+guid: a7e866ce49bf582479f3675646324389
+DefaultImporter:
+>>>>>>>> Stashed changes:Assets/Plugins/FMOD/platforms/mac/lib/fmodstudio.bundle/Contents/_CodeSignature/CodeResources.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 
