@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+
 public class GameEventListener : MonoBehaviour
 {
     public GameEvent gameEvent;
@@ -26,6 +28,12 @@ public class GameEventListener : MonoBehaviour
     private OneParameterUnityEvent<Transform> onTransformTrigger;
     [SerializeField]
     private OneParameterUnityEvent<GameObject> onGameObjectTrigger;
+
+    [System.Serializable]
+    public class TwoParameterUnityEvent<T, T2> : UnityEvent<T, T2> { }
+    [SerializeField]
+    private TwoParameterUnityEvent<PlayerInput, float> onPlayerInputFloatTrigger;
+
     void OnEnable()
     {
         gameEvent.AddListener(this);
@@ -75,5 +83,16 @@ public class GameEventListener : MonoBehaviour
                 onGameObjectTrigger.Invoke(gameObjectArgument);
                 break;
         }
+    }
+
+    public void OnEventTriggered<T, T2>(T firstArgument, T2 secondArgument)
+    {
+        switch((firstArgument, secondArgument))
+        {
+            case (PlayerInput playerInput, float number):
+                onPlayerInputFloatTrigger.Invoke(playerInput, number);
+                break;
+        }
+
     }
 }

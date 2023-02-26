@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
+
 [CreateAssetMenu(menuName = "Game Event")]
 public class GameEvent : ScriptableObject
 {
@@ -62,6 +64,25 @@ public class GameEvent : ScriptableObject
                     break;
                 case GameObject gameObjectArgument:
                     gameEventListeners[i].OnEventTriggered(gameObjectArgument);
+                    break;
+                case PlayerInput playerInputArgument:
+                    gameEventListeners[i].OnEventTriggered(playerInputArgument);
+                    break;
+            }
+        }
+    }
+    #endregion
+
+    #region Game Event; Two Argument
+    public void TriggerEvent<T, T2>(T firstArgument, T2 secondArgument)
+    {
+        for (int i = 0; i < gameEventListeners.Count; i++)
+        {
+            gameEventListeners[i].OnEventTriggered();
+            switch ((firstArgument, secondArgument))
+            {
+                case (PlayerInput, float) playerInputFloatArgument:
+                    gameEventListeners[i].OnEventTriggered();
                     break;
             }
         }
