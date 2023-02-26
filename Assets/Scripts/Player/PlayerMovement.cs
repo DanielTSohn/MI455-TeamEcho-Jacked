@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         spawnerAvailable = SpawnPlayers.Instance != null;
-
+        Debug.Log(spawnerAvailable);
         if(spawnerAvailable)
         {
             StartCoroutine(DelayedStart());
