@@ -47,14 +47,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 6813705184780427338}
   debugMessages: 1
-  jackPlayerNumber: 0000000001000000
+  jackPlayerNumber: 00000000010000000200000003000000
   jackMaterials:
-  - {fileID: 2100000, guid: 0bee7fc5fcbb9f840bc791d2047b4f40, type: 2}
+  - {fileID: 2100000, guid: 66976e7afbb44db4280297270fda3589, type: 2}
+  - {fileID: 2100000, guid: 2db7af782ca6c96468f851ee00c2d449, type: 2}
   - {fileID: 2100000, guid: 6e69ed3e2ebaa7144a6f5119bf1ac748, type: 2}
-  shirtPlayerNumber: 0000000001000000
+  - {fileID: 2100000, guid: 0bee7fc5fcbb9f840bc791d2047b4f40, type: 2}
+  shirtPlayerNumber: 00000000010000000200000003000000
   shirtMaterials:
   - {fileID: 2100000, guid: 19de40b64350dea478f58af070e495a1, type: 2}
   - {fileID: 2100000, guid: a075b2cf0e3669b47a8cf3882fd4d522, type: 2}
+  - {fileID: 2100000, guid: 7171a7327ff778b458511d4c2408fa1b, type: 2}
+  - {fileID: 2100000, guid: eca6a9d1654b61c4c93dfb2c782204d5, type: 2}
   spawnDistance: 5
 --- !u!114 &6813705184780427338
 MonoBehaviour:
