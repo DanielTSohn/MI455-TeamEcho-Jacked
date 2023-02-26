@@ -3,7 +3,9 @@ guid: 67ee677c7bcb58649815cf5d0faed58f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - spawnPoint: {instanceID: 0}
+  - onSceneReady: {fileID: 11400000, guid: cec943a6e487b7140a7713696f269a15, type: 2}
   executionOrder: -3
   icon: {instanceID: 0}
   userData: 

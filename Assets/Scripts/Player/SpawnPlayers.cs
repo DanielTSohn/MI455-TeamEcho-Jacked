@@ -11,6 +11,8 @@ public class SpawnPlayers : MonoBehaviour
     [SerializeField]
     [Tooltip("The spawn point the players spawn around")]
     private Transform spawnPoint;
+    [SerializeField]
+    private GameEvent onSceneReady;
 
     public static SpawnPlayers Instance { get; private set; }
     public bool SceneReady { get; private set; } = false;
@@ -63,5 +65,7 @@ public class SpawnPlayers : MonoBehaviour
         }
 
         SceneReady = true;
+        onSceneReady.TriggerEvent();
+        onSceneReady.TriggerEvent(true);
     }
 }
