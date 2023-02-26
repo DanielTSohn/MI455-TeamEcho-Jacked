@@ -55,6 +55,87 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 480
+--- !u!114 &-6612666175836132085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Gameplay Music
+  m_EditorClassIdentifier: 
+  Path: event:/Gameplay Music
+  Guid:
+    Data1: -1116930014
+    Data2: 1259279707
+    Data3: -585913708
+    Data4: -99271542
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16077
+--- !u!114 &-4366043069427393599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI Hover
+  m_EditorClassIdentifier: 
+  Path: event:/UI Hover
+  Guid:
+    Data1: -810484120
+    Data2: 1285846322
+    Data3: 342194596
+    Data4: 1965378303
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1000
+--- !u!114 &-4249148524375977651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI Click
+  m_EditorClassIdentifier: 
+  Path: event:/UI Click
+  Guid:
+    Data1: -697757912
+    Data2: 1219977945
+    Data3: 942245035
+    Data4: -1614247678
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2300
 --- !u!114 &-2776568988145124648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,6 +159,33 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
+--- !u!114 &-2570415704859398646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Victory
+  m_EditorClassIdentifier: 
+  Path: event:/Victory
+  Guid:
+    Data1: -259655355
+    Data2: 1238347478
+    Data3: -2128141642
+    Data4: -1117537032
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -205,12 +313,19 @@ MonoBehaviour:
   - {fileID: -2091578709866586792}
   - {fileID: 1467285571649593842}
   - {fileID: -8761652018191964493}
+  - {fileID: -6612666175836132085}
+  - {fileID: -4249148524375977651}
+  - {fileID: -2570415704859398646}
+  - {fileID: -4366043069427393599}
+  - {fileID: 4922166325001794016}
+  - {fileID: 7210448293233805696}
+  - {fileID: 8098257447726790612}
   EditorParameters: []
   MasterBanks:
   - {fileID: 4196855893592970013}
   StringsBanks:
   - {fileID: 8740710628958471208}
-  cacheTime: 638125273192173113
+  cacheTime: 638129513852803133
   cacheVersion: 131601
 --- !u!114 &401400651700119399
 MonoBehaviour:
@@ -302,11 +417,65 @@ MonoBehaviour:
   Path: ../../../FMOD Studio Projects/Jackhammer/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638125273192163164
+  lastModified: 638129513852782854
   FileSizes:
   - Name: Desktop
-    Value: 370880
+    Value: 1361600
   Exists: 1
+--- !u!114 &4922166325001794016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Jump Cooldown Complete
+  m_EditorClassIdentifier: 
+  Path: event:/Jump Cooldown Complete
+  Guid:
+    Data1: 1597494210
+    Data2: 1251453012
+    Data3: -1172210546
+    Data4: -1273715329
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 800
+--- !u!114 &7210448293233805696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player Collision
+  m_EditorClassIdentifier: 
+  Path: event:/Player Collision
+  Guid:
+    Data1: -696415236
+    Data2: 1207251152
+    Data3: 1459591092
+    Data4: 838256386
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 410
 --- !u!114 &7563560785953942622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,6 +496,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 858
   Exists: 1
+--- !u!114 &8098257447726790612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Menu Music
+  m_EditorClassIdentifier: 
+  Path: event:/Menu Music
+  Guid:
+    Data1: 1180537596
+    Data2: 1297127746
+    Data3: -1899050597
+    Data4: -880263259
+  Banks:
+  - {fileID: 4196855893592970013}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 46860
 --- !u!114 &8740710628958471208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,8 +538,8 @@ MonoBehaviour:
   Path: ../../../FMOD Studio Projects/Jackhammer/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638125273192173113
+  lastModified: 638129513852803133
   FileSizes:
   - Name: Desktop
-    Value: 1010
+    Value: 1328
   Exists: 1
