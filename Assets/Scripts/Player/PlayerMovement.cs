@@ -183,6 +183,8 @@ public class PlayerMovement : MonoBehaviour
         relativeRight.y = 0;
         relativeRight.Normalize();
         player.transform.RotateAround(movementGuide.transform.position, relativeForward * -movementInput.x + relativeRight * movementInput.y, movementMultiplier/7);
+
+
     }
 
     public void ReadBalance(InputAction.CallbackContext balance)
