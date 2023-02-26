@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerModelSwapper : MonoBehaviour
 {
     [SerializeField]
-    private MeshRenderer jackhammerRenderer;
+    private SkinnedMeshRenderer jackhammerRenderer;
     [SerializeField]
-    private MeshRenderer playerRenderer;
+    private SkinnedMeshRenderer playerRenderer;
 
     public void SwapJackhammerMaterial(Material newMaterial)
     {
@@ -19,7 +19,7 @@ public class PlayerModelSwapper : MonoBehaviour
         SwapMaterial(playerRenderer, newMaterial);
     }
 
-    private void SwapMaterial(MeshRenderer meshRenderer, Material newMaterial)
+    private void SwapMaterial(SkinnedMeshRenderer meshRenderer, Material newMaterial)
     {
         meshRenderer.material = newMaterial;
     }

@@ -64,6 +64,7 @@ public class SpawnPlayers : MonoBehaviour
             Debug.Log("Joined player " + (player.Value+1));
         }
 
+        Debug.Log("Ready");
         SceneReady = true;
         onSceneReady.TriggerEvent();
         onSceneReady.TriggerEvent(true);
