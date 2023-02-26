@@ -1082,6 +1082,9 @@ MonoBehaviour:
   onGameObjectTrigger:
     m_PersistentCalls:
       m_Calls: []
+  onPlayerInputFloatTrigger:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &-8228788774115319597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,18 +1100,18 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1986791410
+      Data2: 1200076822
+      Data3: 2018315697
+      Data4: -419284553
+    Path: event:/Stone Break
   Event: 
-  PlayEvent: 0
+  PlayEvent: 2
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: -1
-  OverrideMaxDistance: -1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
