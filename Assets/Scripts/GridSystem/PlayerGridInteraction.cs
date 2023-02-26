@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using DestroyIt;
 
@@ -49,21 +50,6 @@ public class PlayerGridInteraction : MonoBehaviour
         }
     }
 
-    /*private void FindValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
-    {
-        //validCells = new Dictionary<Vector3Int, Cell>();
-        Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
-        foreach (var direction in directions)
-        {
-            GameObject cellCheck;
-            Vector3Int neighborPos = node + direction;
-            if (gs.cellsHash.TryGetValue(neighborPos, out cellCheck))
-            {
-                if (cellCheck) { validCells.Add(neighborPos, cellCheck.GetComponent<Cell>()); }
-            }
-        }
-    }*/
-
     private void FloodValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
     {
         Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
@@ -75,14 +61,14 @@ public class PlayerGridInteraction : MonoBehaviour
             {
                 // If we've already visited this node, then don't recurse
                 // Also make sure we don't flood over the tile the player is currently touching
-                if (cellCheck && !validCells.ContainsKey(neighborPos) && cellCheck.GetComponent<Cell>() != cutoutCellToIgnore) 
-                { 
+                if (cellCheck && !validCells.ContainsKey(neighborPos) && cellCheck.GetComponent<Cell>() != cutoutCellToIgnore)
+                {
                     validCells.Add(neighborPos, cellCheck.GetComponent<Cell>());
                     if (debugSphere)
                     {
-                        var thingy = Instantiate(debugSphere, 
+                        var thingy = Instantiate(debugSphere,
                             gs.GetComponent<Grid>().CellToWorld(neighborPos), gs.transform.rotation);
-                        Destroy(thingy, 2.0f);
+                        Destroy(thingy, 0.5f);
                     }
                     FloodValidNeighbors(neighborPos, validCells);
                 }
@@ -108,14 +94,43 @@ public class PlayerGridInteraction : MonoBehaviour
         return brokenNeighborCount;
     }
 
+    private void Awake()
+    {
+        //StartCoroutine(DelayedStart());
+        SceneManager.sceneLoaded += GetGrids;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= GetGrids;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        var thing = GameObject.FindGameObjectsWithTag("GridSystem");
-        for (int i = 0; i < thing.Length; i++)
+
+    }
+
+    public void GetGrids(Scene scene, LoadSceneMode lsMode)
+    {
+        if (scene.name == "ConstructionSite")
         {
-            gridSystems.Add(thing[i].GetComponent<GridSystem>());
+            var thing = GameObject.FindGameObjectsWithTag("GridSystem");
+            for (int i = 0; i < thing.Length; i++)
+            {
+                gridSystems.Add(thing[i].GetComponent<GridSystem>());
+            }
         }
+
+    }
+
+    private IEnumerator DelayedStart()
+    {
+        if (!SpawnPlayers.Instance.SceneReady)
+        {
+            yield return new WaitUntil(() => SpawnPlayers.Instance.SceneReady);
+        }
+
     }
 
     public void OnCellHit(Vector3Int v, GridSystem g)
@@ -134,12 +149,13 @@ public class PlayerGridInteraction : MonoBehaviour
             List<Cell> validNeighbors = new List<Cell>();
             FindValidNeighbors(v, validNeighbors);
             //FindValidNeighbors(v, out validNeighbors);
-            foreach(Cell c in validNeighbors)
+            foreach (Cell c in validNeighbors)
             {
                 Dictionary<Vector3Int, Cell> cutoutInstance = new Dictionary<Vector3Int, Cell>();
                 activeCutoutInstances.Add(cutoutInstance);
                 Flood(c.gridLocation.x, c.gridLocation.y, cutoutInstance);
-                
+                print("Flooding a tile");
+
                 // After doing a DFS on each tile, check if the amount we just selected in
                 // the search is less than the total number of remaining tiles. If so,
                 // this means we found an island, and we can destroy said island, and exit the loop early.
@@ -160,13 +176,13 @@ public class PlayerGridInteraction : MonoBehaviour
             int smallestCutout = 99999999;
             int largestCutout = 0;
             Dictionary<Vector3Int, Cell> shapeToCutout = new Dictionary<Vector3Int, Cell>();
-            foreach(var d in activeCutoutInstances)
+            foreach (var d in activeCutoutInstances)
             {
-                if (d.Count < smallestCutout) 
-                { 
+                if (d.Count < smallestCutout)
+                {
                     smallestCutout = d.Count;
                     shapeToCutout = d;
-                } 
+                }
                 if (d.Count > largestCutout) { largestCutout = d.Count; }
             }
 
@@ -184,6 +200,12 @@ public class PlayerGridInteraction : MonoBehaviour
                     }
                 }
             }
+
+            foreach (var d in activeCutoutInstances)
+            {
+                print("Size of active cutout instance: " + d.Count);
+            }
+
 
             activeCutoutInstances.Clear();
 
@@ -230,29 +252,7 @@ public class PlayerGridInteraction : MonoBehaviour
             {
                 cutoutInstance.Add(newVec, curCell);
                 FloodValidNeighbors(newVec, cutoutInstance);
-                //FindValidNeighbors(newVec, cutoutInstance);
-                /*foreach (var thingy in cutoutInstance.Keys)
-                {
-                    Cell c;
-                    cutoutInstance.TryGetValue(thingy, out c);
-                    FindValidNeighbors(thingy, cutoutInstance);
-                    if (c != curCell)
-                    {
-
-                    }
-                }*/
             }
         }
-    }
-
-    /*public Vector3Int GetCellLocationOnGrid(Vector3 pos)
-    {
-        return gs.WorldToGridLocation(pos);
-    }*/
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(currentCell.transform.position, 1f);
     }
 }
