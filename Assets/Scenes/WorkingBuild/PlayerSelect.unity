@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1098089709}
-  m_IndirectSpecularColor: {r: 0.32544857, g: 0.31521168, b: 0.37637913, a: 1}
+  m_IndirectSpecularColor: {r: 0.3254315, g: 0.31530392, b: 0.3763855, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2655,7 +2655,7 @@ MonoBehaviour:
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 24
+  m_fontSizeMin: 18
   m_fontSizeMax: 500
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -2898,10 +2898,10 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.307
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
