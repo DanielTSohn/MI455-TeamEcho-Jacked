@@ -210,19 +210,8 @@ public class PlayerMovement : MonoBehaviour
             if (!CanMove) { yield return new WaitUntil(() => CanMove); }
             if (!Moving) { yield return new WaitUntil(() => Moving); }
 
-            if(Grounded)
-            {
-                if (JumpAim) { RotatePlayer(); }
-                else { MovePlayer(); }
-            }
-            else
-            {
-                Vector3 relativeForward = -playerCamera.transform.forward;
-                relativeForward.y = 0;
-                relativeForward.Normalize();
-
-                player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, Quaternion.LookRotation(relativeForward, Vector3.up), movementMultiplier / 7);
-            }
+            if (JumpAim) { RotatePlayer(); }
+            else { MovePlayer(); }
 
             yield return new WaitForFixedUpdate();
         }
