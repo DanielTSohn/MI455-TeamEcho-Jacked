@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using DestroyIt;
@@ -39,8 +40,9 @@ public class PlayerGridInteraction : MonoBehaviour
     private void FindValidNeighbors(Vector3Int node, List<Cell> validCells)
     {
         Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
-        foreach (var direction in directions)
+        for (int i = 0; i < directions.Length; i++)
         {
+            var direction = directions[i];
             GameObject cellCheck;
             Vector3Int neighborPos = node + direction;
             if (gs.cellsHash.TryGetValue(neighborPos, out cellCheck))
@@ -53,8 +55,9 @@ public class PlayerGridInteraction : MonoBehaviour
     private void FloodValidNeighbors(Vector3Int node, Dictionary<Vector3Int, Cell> validCells)
     {
         Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
-        foreach (var direction in directions)
+        for (int i = 0; i < directions.Length; i++)
         {
+            var direction = directions[i];
             GameObject cellCheck;
             Vector3Int neighborPos = node + direction;
             if (gs.cellsHash.TryGetValue(neighborPos, out cellCheck))
@@ -80,8 +83,9 @@ public class PlayerGridInteraction : MonoBehaviour
     {
         int brokenNeighborCount = 0;
         Vector3Int[] directions = (node.y % 2) == 0 ? yIsEven : yIsOdd;
-        foreach (var direction in directions)
+        for (int i = 0; i < directions.Length; i++)
         {
+            var direction = directions[i];
             GameObject cellCheck;
             Vector3Int neighborPos = node + direction;
             if (gs.cellsHash.TryGetValue(neighborPos, out cellCheck))
@@ -149,8 +153,9 @@ public class PlayerGridInteraction : MonoBehaviour
             List<Cell> validNeighbors = new List<Cell>();
             FindValidNeighbors(v, validNeighbors);
             //FindValidNeighbors(v, out validNeighbors);
-            foreach (Cell c in validNeighbors)
+            for (int i = 0; i < validNeighbors.Count; i++)
             {
+                Cell c = validNeighbors[i];
                 Dictionary<Vector3Int, Cell> cutoutInstance = new Dictionary<Vector3Int, Cell>();
                 activeCutoutInstances.Add(cutoutInstance);
                 Flood(c.gridLocation.x, c.gridLocation.y, cutoutInstance);
@@ -176,7 +181,7 @@ public class PlayerGridInteraction : MonoBehaviour
             int smallestCutout = 99999999;
             int largestCutout = 0;
             Dictionary<Vector3Int, Cell> shapeToCutout = new Dictionary<Vector3Int, Cell>();
-            foreach (var d in activeCutoutInstances)
+            /*foreach (var d in activeCutoutInstances)
             {
                 if (d.Count < smallestCutout)
                 {
@@ -184,29 +189,37 @@ public class PlayerGridInteraction : MonoBehaviour
                     shapeToCutout = d;
                 }
                 if (d.Count > largestCutout) { largestCutout = d.Count; }
+            }*/
+
+            for (int i = 0; i < activeCutoutInstances.Count; i++)
+            {
+                Dictionary<Vector3Int, Cell> d = activeCutoutInstances.ElementAt(i);
+
+                if (d.Count < smallestCutout)
+                {
+                    smallestCutout = d.Count;
+                    shapeToCutout = d;
+                }
+                if (d.Count > largestCutout) { largestCutout = d.Count; }
             }
+            print("Smallest cutout: " + smallestCutout);
 
             // If our smallest cutout is equal to our largest, it means that every DFS we did was over the
             // same subset of tiles, i.e. the entire map. In this case, we don't delete anything.
             if (smallestCutout != largestCutout)
             {
                 //print("Valid island parent found, location of parent is: " + c.gridLocation);
-                foreach (Cell cell in shapeToCutout.Values)
+                //Cell cell in shapeToCutout.Values
+                for (int i = 0; i < shapeToCutout.Count; i++)
                 {
-                    if (cell.TryGetComponent(out Destructible tileDestroy))
+                    KeyValuePair<Vector3Int, Cell> entry = shapeToCutout.ElementAt(i);
+                    if (entry.Value.TryGetComponent(out Destructible tileDestroy))
                     {
                         tileDestroy.ApplyDamage(1);
                         gs.DecrementTotalRemainingCells();
                     }
                 }
             }
-
-            foreach (var d in activeCutoutInstances)
-            {
-                print("Size of active cutout instance: " + d.Count);
-            }
-
-
             activeCutoutInstances.Clear();
 
         }

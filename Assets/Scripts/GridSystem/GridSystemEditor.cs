@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(GridSystem))]
@@ -35,3 +37,4 @@ public class GridSystemEditor : Editor
         }
     }
 }
+#endif
