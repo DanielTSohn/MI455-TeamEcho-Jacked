@@ -41,6 +41,10 @@ public class PlayerComponents : MonoBehaviour
     [SerializeField]
     private PlayerInput inputManager;
 
+    public GameUIManager PlayerUI { get { return playerUI; } set { playerUI = value; } }
+    [SerializeField]
+    private GameUIManager playerUI;
+
     private void Awake()
     {
         DontDestroyOnLoad(this);

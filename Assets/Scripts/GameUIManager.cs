@@ -3,37 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class PlayerData
-{
-    public GameObject player;
-    public JackhammerStandard moveScript;
-    public Image jumpCD;
-    public Image chargeBar;
-}
-
 public class GameUIManager : MonoBehaviour
 {
     [SerializeField]
-    private PlayerData[] players;
+    private Image jumpBase;
+    [SerializeField]
+    private Image jumpBar;
+    [SerializeField]
+    private Image jumpCDBase;
+    [SerializeField]
+    private Image jumpCDCover;
+    [SerializeField]
+    PlayerComponents playerComponents;
 
-    private void FixedUpdate()
+    public void UpdateJump(float ratio)
     {
-        foreach(PlayerData data in players)
-        {
-            UpdateJumpCD(data);
-            UpdateChargeBar(data);
-        }
-
+        jumpBar.fillAmount = ratio;
     }
 
-    public void UpdateJumpCD(PlayerData player)
+    public void UpdateJumpCD(float ratio)
     {
-        player.jumpCD.fillAmount = player.moveScript.jumpCDProportion;
-    }
-
-    public void UpdateChargeBar(PlayerData player)
-    {
-        player.chargeBar.fillAmount = player.moveScript.jumpProportion;
+        jumpCDCover.fillAmount = ratio;
     }
 }

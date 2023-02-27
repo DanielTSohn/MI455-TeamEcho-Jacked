@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DestroyIt;
-
+using UnityEngine.Events;
 public class PlayerMovement : MonoBehaviour
 {
     #region Components
     [Header("Game Events")]
     [SerializeField]
-    private GameEvent jumpUpdate;
-    [SerializeField]
-    private GameEvent jumpCDUpdate;
-    [SerializeField]
     private GameEvent onJump;
     [SerializeField]
     private GameEvent pauseInput;
+    [Header("Local Events")]
+    public UnityEvent JumpRelaeased;
+    public UnityEvent JumpCharged;
+    public UnityEvent JumpCDRestored;
+    public UnityEvent JumpLand;
+
 
     [Header("Component Holder")]
     [SerializeField]
@@ -97,9 +99,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 movementInput;
     private bool jumpHoldIterrupt;
     private Collider[] terrains = new Collider[10];
-    private float jumpProportion = 0;
-    private float jumpCDProportion = 0;
-
     #endregion
 
     void Awake()
@@ -123,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        terrains = Physics.OverlapBox(movementGuide.position, movementGuide.transform.lossyScale, movementGuide.rotation);
+        terrains = Physics.OverlapBox(movementGuide.position, movementGuide.transform.lossyScale, movementGuide.rotation, groundLayers);
         if(terrains.Length > 0)
         { 
             Grounded = true; 
@@ -250,28 +249,55 @@ public class PlayerMovement : MonoBehaviour
         float jumpHoldTime;
         for (jumpHoldTime = 0; jumpHoldTime < maxJumpHoldTime; jumpHoldTime += Time.fixedDeltaTime)
         {
-            jumpProportion = jumpHoldTime / maxJumpHoldTime;
-            jumpUpdate.TriggerEvent(gameObject);
+            componentHolder.PlayerUI.UpdateJump(jumpHoldTime / maxJumpHoldTime);
             if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
             if (jumpHoldIterrupt) { break; }
             yield return new WaitForFixedUpdate();
         }
-        jumpUpdate.TriggerEvent(gameObject);
+        if(jumpHoldTime >= maxJumpHoldTime) { JumpCharged.Invoke(); }
         onJump.TriggerEvent();
+        JumpRelaeased.Invoke();
+
         movementGuide.AddForce(Mathf.Sqrt(-2 * Physics.gravity.y * bigJumpHeight * (jumpHoldTime / maxJumpHoldTime)) * player.transform.up, ForceMode.VelocityChange);
         PistonActive = true;
-
+        StartCoroutine(WaitGrounded());
         
-        jumpCDProportion = 1;
         for (float cooldown = jumpCooldown; cooldown >= 0; cooldown -= Time.fixedDeltaTime)
         {
-            if (cooldown / jumpHoldTime < (1 - jumpProportion)) { jumpProportion = 0; JumpAim = false; }
-            jumpCDProportion = cooldown / jumpCooldown;
+            componentHolder.PlayerUI.UpdateJumpCD(cooldown / jumpCooldown);
             if (TimeManager.Instance != null && TimeManager.Instance.IsPaused) { yield return new WaitForResume(); }
             yield return new WaitForFixedUpdate();
         }
-        jumpCDProportion = 0;
+        JumpCDRestored.Invoke();
+        componentHolder.PlayerUI.UpdateJumpCD(0);
+        componentHolder.PlayerUI.UpdateJump(0);
         Jumping = false;
+    }
+
+    private IEnumerator WaitGrounded()
+    {
+        if (Grounded) { yield return new WaitWhile(() => Grounded); }
+        Debug.Log("Departed");
+        if (!Grounded) { yield return new WaitUntil(() => Grounded); }
+        Debug.Log("Landed");
+        JumpLand.Invoke();
+        JumpAim = false;
+        terrains = Physics.OverlapBox(movementGuide.position, new Vector3(3, 2, 3), movementGuide.rotation);
+        if (terrains.Length > 0)
+        {
+            foreach (Collider collider in terrains)
+            {
+                if (collider.TryGetComponent(out Cell cell))
+                {
+                    pgi.OnCellHit(cell.gridLocation, cell.GetComponentInParent<GridSystem>());
+                }
+
+                if (collider.TryGetComponent(out Destructible destructible))
+                {
+                    destructible.ApplyDamage(1);
+                }
+            }
+        }
     }
 
     public void ReadPause(InputAction.CallbackContext pause)
