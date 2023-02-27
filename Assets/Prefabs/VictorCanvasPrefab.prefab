@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 740408324564573459}
   - component: {fileID: 740408324564573456}
   - component: {fileID: 740408324564573457}
+  - component: {fileID: 1423818432}
+  - component: {fileID: 92826869075727401}
+  - component: {fileID: 1423818433}
   m_Layer: 5
   m_Name: VictorCanvasPrefab
   m_TagString: Untagged
@@ -59,7 +62,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &740408324564573456
 MonoBehaviour:
@@ -101,6 +104,92 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &1423818432
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740408324564573678}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
+--- !u!114 &92826869075727401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740408324564573678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56742484f12b084392320b076010712, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  victoryMenuGroup: {fileID: 1423818432}
+--- !u!114 &1423818433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740408324564573678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d7f4af867636cc408f735700bb57d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: d7ce274b9dbd7af41b316cf25dabcfab, type: 2}
+  onEventTriggered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 92826869075727401}
+        m_TargetAssemblyTypeName: VictoryScreen, Assembly-CSharp
+        m_MethodName: Victory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onBoolTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onIntTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onFloatTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onStringTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onVector2Trigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onVector2IntTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onVector3Trigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onVector3IntTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onTransformTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameObjectTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerInputFloatTrigger:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &740408324674150932
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +288,7 @@ MonoBehaviour:
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 10
   m_fontSizeMax: 500
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -411,7 +500,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 10
   m_fontSizeMax: 500
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -683,8 +772,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6379299782182472605, guid: fc5aabbf26abcfb47b0f33219d3b2210,
-          type: 3}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TriggerLoading, Assembly-CSharp
         m_MethodName: StartLoading
         m_Mode: 5
@@ -693,7 +781,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: MainMenu
           m_BoolArgument: 0
         m_CallState: 2
   betterTransitions: []

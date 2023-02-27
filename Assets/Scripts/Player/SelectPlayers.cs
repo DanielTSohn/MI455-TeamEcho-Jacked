@@ -67,6 +67,7 @@ public class SelectPlayers : MonoBehaviour
             components.PlayerCamera.cullingMask = viewLayers;
             components.VirtualCamera.GetComponent<CinemachineInputProvider>().PlayerIndex = player.Value;
             components.VirtualCamera.layer = player.Value + 10;
+            components.gameObject.SetActive(true);
         }
     }
 }
