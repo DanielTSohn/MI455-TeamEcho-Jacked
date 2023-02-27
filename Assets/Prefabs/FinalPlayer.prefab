@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 8953309437371318773}
   m_Layer: 6
   m_Name: FinalPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -678,22 +678,6 @@ MonoBehaviour:
     m_ActionName: JackHammer/Balance[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: JackhammerMovement, Assembly-CSharp
-        m_MethodName: ReadRotate
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 261304e7-6e64-4b06-89c1-9b6d0dc79c42
-    m_ActionName: JackHammer/Rotate[/Keyboard/q,/Keyboard/e]
-  - m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 4513324343389950634}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: ReadJump
@@ -712,6 +696,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2e63b13a-6850-438a-a14e-d420481d86bb
     m_ActionName: JackHammer/Camera[/Keyboard/q,/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4513324343389950634}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ReadPause
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d0ebdf54-8cb5-4ee3-bd3d-0814a837b7b6
+    m_ActionName: JackHammer/Pause[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: JackHammer
@@ -753,6 +753,7 @@ MonoBehaviour:
   jumpUpdate: {fileID: 11400000, guid: 1ff58015e8ddd764d890319f1a800cf7, type: 2}
   jumpCDUpdate: {fileID: 11400000, guid: 1e482e6512130f140a77f9b9edcf1f93, type: 2}
   onJump: {fileID: 11400000, guid: a4e1a9677b3488344ba332d0ff0debf6, type: 2}
+  pauseInput: {fileID: 11400000, guid: 4655213cd7d0d9a4395db6041e09ddc7, type: 2}
   componentHolder: {fileID: 8987878781757687083}
   movementGuide: {fileID: 5869724736918074336}
   groundLayers:

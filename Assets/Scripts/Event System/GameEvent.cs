@@ -81,8 +81,8 @@ public class GameEvent : ScriptableObject
             gameEventListeners[i].OnEventTriggered();
             switch ((firstArgument, secondArgument))
             {
-                case (PlayerInput, float) playerInputFloatArgument:
-                    gameEventListeners[i].OnEventTriggered();
+                case (PlayerInput playerInput, float number) playerInputFloatArgument:
+                    gameEventListeners[i].OnEventTriggered(playerInput, number);
                     break;
             }
         }

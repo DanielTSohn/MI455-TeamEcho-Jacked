@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private GameEvent jumpCDUpdate;
     [SerializeField]
     private GameEvent onJump;
+    [SerializeField]
+    private GameEvent pauseInput;
 
     [Header("Component Holder")]
     [SerializeField]
@@ -272,6 +274,13 @@ public class PlayerMovement : MonoBehaviour
         Jumping = false;
     }
 
+    public void ReadPause(InputAction.CallbackContext pause)
+    {
+        if (pause.performed)
+        {
+            if(pauseInput != null) { pauseInput.TriggerEvent(); }
+        }
+    }
 
     private void OnDrawGizmos()
     {
