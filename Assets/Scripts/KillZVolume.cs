@@ -21,8 +21,8 @@ public class KillZVolume : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] ps = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject p in ps)
+        PlayerInput[] ps = GameObject.FindObjectsOfType<PlayerInput>();
+        foreach(PlayerInput p in ps)
         {
             PlayerMovement player = p.GetComponent<PlayerMovement>();
             players.Add(player);
