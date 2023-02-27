@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class KillZVolume : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class KillZVolume : MonoBehaviour
     [SerializeField] private string winMessage = "You win!";
     [Tooltip("The textmesh to print the winstring to")]
     [SerializeField] private TextMeshProUGUI tm;
+    [SerializeField] private GameEvent onGameOver;
 
-    private HashSet<JackhammerStandard> players = new HashSet<JackhammerStandard>();
+    private HashSet<PlayerMovement> players = new HashSet<PlayerMovement>();
     //private TextMeshPro tm;
 
     // Start is called before the first frame update
@@ -22,7 +24,7 @@ public class KillZVolume : MonoBehaviour
         GameObject[] ps = GameObject.FindGameObjectsWithTag("Player");
         foreach(GameObject p in ps)
         {
-            JackhammerStandard player = p.GetComponent<JackhammerStandard>();
+            PlayerMovement player = p.GetComponent<PlayerMovement>();
             players.Add(player);
         }
         //tm = tmObject.GetComponent<TextMeshPro>();
@@ -37,20 +39,19 @@ public class KillZVolume : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        JackhammerStandard player = other.GetComponent<JackhammerStandard>();
-        if (player)
+        PlayerMovement player = other.GetComponent<PlayerMovement>();
+        if (player) { RemovePlayer(player); }
+        
+    }
+
+    public void RemovePlayer(PlayerMovement player)
+    {
+        players.Remove(player);
+        // When only one player remains, print win screen
+        if (players.Count == 1)
         {
-            players.Remove(player);
-            // When only one player remains, print win screen
-            if (players.Count == 1)
-            {
-                JackhammerStandard finalPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<JackhammerStandard>();
-                winMessage = finalPlayer.playerColorIdentifier.ToString() + " wins!";
-                tm.text = winMessage;
-                print(winMessage);
-                UIWinScreen.SetActive(true);
-            }
-            
+            PlayerInput finalPlayer = GameObject.FindObjectOfType<PlayerInput>();
+            onGameOver.TriggerEvent(finalPlayer);
         }
     }
 }
