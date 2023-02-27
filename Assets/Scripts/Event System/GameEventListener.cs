@@ -28,6 +28,8 @@ public class GameEventListener : MonoBehaviour
     private OneParameterUnityEvent<Transform> onTransformTrigger;
     [SerializeField]
     private OneParameterUnityEvent<GameObject> onGameObjectTrigger;
+    [SerializeField]
+    private OneParameterUnityEvent<PlayerInput> onPlayerInputTrigger;
 
     [System.Serializable]
     public class TwoParameterUnityEvent<T, T2> : UnityEvent<T, T2> { }
@@ -81,6 +83,9 @@ public class GameEventListener : MonoBehaviour
                 break;
             case GameObject gameObjectArgument:
                 onGameObjectTrigger.Invoke(gameObjectArgument);
+                break;
+            case PlayerInput playerInputArgument:
+                onPlayerInputTrigger.Invoke(playerInputArgument);
                 break;
         }
     }

@@ -34,6 +34,7 @@ public class KillZVolume : MonoBehaviour
     {
         Debug.Log("Player Removed");
         players.Remove(playerComponents.PlayerMovement);
+        playerComponents.gameObject.SetActive(false);
         // When only one player remains, print win screen
         if (players.Count == 1)
         {

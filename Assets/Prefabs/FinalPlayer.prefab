@@ -122,6 +122,9 @@ MonoBehaviour:
   onGameObjectTrigger:
     m_PersistentCalls:
       m_Calls: []
+  onPlayerInputTrigger:
+    m_PersistentCalls:
+      m_Calls: []
   onPlayerInputFloatTrigger:
     m_PersistentCalls:
       m_Calls: []
@@ -785,8 +788,8 @@ MonoBehaviour:
       Data4: -1152940827
     Path: event:/Jackhammer
   Event: 
-  PlayEvent: 1
-  StopEvent: 0
+  PlayEvent: 11
+  StopEvent: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
